@@ -1,0 +1,112 @@
+﻿@model List<string>
+
+<div id="table" class="table-editable">
+    <span class="table-add float-right mb-3 mr-2">
+        <a href="#!" class="text-success" onclick="addRow()">
+            <i class="fas fa-plus fa-2x" aria-hidden="true"></i>
+        </a>
+    </span>
+    <table class="table table-bordered table-responsive-md table-striped text-center" id="myTable">
+        <thead>
+        <tr>
+            <th>
+                ردیف
+            </th>
+            <th>
+
+                عنوان
+
+            </th>
+            <th>
+
+                status
+
+            </th>
+
+        </tr>
+        </thead>
+
+        <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@(Model.IndexOf(item) + 1)</td>
+                <td>
+
+                    @item
+
+
+                </td>
+
+                <td>
+                   
+                        <button type="button" class="btn btn-danger btn-rounded btn-sm my-0" onclick="deleteRow(this)">
+                            Remove
+                        </button>
+                    
+                </td>
+
+            </tr>
+        }
+            
+        </tbody>
+
+    </table>
+
+</div>
+
+<script>
+    function addRow() {
+
+        var table = document.getElementById("myTable");
+        var row = table.insertRow();
+        var cell0 = row.insertCell(0);
+        var cell1 = row.insertCell(1);
+        var cell2 = row.insertCell(2);
+        var i = row.rowIndex;
+        cell0.innerHTML = i;
+        cell1.contentEditable = 'true';
+    }
+</script>
+
+<script>
+    function deleteRow(r) {
+
+        var j = r.parentNode.parentNode.rowIndex;
+        var table = document.getElementById("myTable");
+        table.deleteRow(j);
+
+
+        for (var i = j; i < table.rows.length; i++) {
+            var x = table.rows[i].cells;
+            x[0].innerHTML = i;
+
+        }
+    }
+</script>
+
+
+@*<script>
+
+    $('#mytable').SetEditable();
+
+
+    $('#but_add').click(function() {
+        rowAddNew('mytable');
+    });
+
+    //function editFunc() {
+
+    //    document.getElementsByTagName("div").contentEditable = 'true';
+    //    document.getElementsByTagName("div").style.borderColor = "red";
+
+    //}
+    //$("#edit").onclick(function (parameters) {
+
+    //    alert("cdsk");
+    //    //$("div").contentEditable();
+    //    //$("div").style.border.color("#112233");
+
+    //})
+</script>*@

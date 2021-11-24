@@ -1,0 +1,159 @@
+﻿@using System.Collections
+@model testapplication.Models.User
+@{
+    ViewData["Title"] = "تبت نام کاربر";
+}
+@if (!string.IsNullOrWhiteSpace(ViewBag.user_empty_error))
+{
+    <div class="alert-danger p-3 m-3">
+        <p>@ViewBag.user_empty_error</p>
+    </div>
+}
+@if (!string.IsNullOrWhiteSpace(ViewBag.nationalcode_unique_error))
+{
+    <div class="alert-danger p-3 m-3">
+        <p>@ViewBag.nationalcode_unique_error</p>
+    </div>
+}
+
+<section class="contact-section px-3 py-5">
+    <div class="container">
+        <form class="contact-form col-lg-12 mx-lg-auto" asp-controller="Home" asp-action="Register">
+            <div class="form-row  justify-content-center">
+                <div class="form-group required col-md-3">
+                    <label class="control-label" asp-for="NationalCode">کدملی:</label>
+                    <input type="text" class="form-control numeric" placeholder="کدملی ده رقمی خود را وارد کنید" asp-for="NationalCode" required="این فیلد اجباری است.">
+                    <span asp-validation-for="NationalCode" class="text-danger"></span>
+                </div>
+                <div class="form-group required col-md-3">
+                    <label class="control-label" asp-for="FirstName">نام:</label>
+                    <input type="text" class="form-control farsi_no_number" placeholder="نام خود را وارد کنید" asp-for="FirstName">
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group required col-md-3">
+                    <label class="control-label" asp-for="LastName">نام خانوادگی:</label>
+                    <input type="text" class="form-control farsi_no_number" placeholder="نام خانوادگی خود را وارد کنید" asp-for="LastName">
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="control-label" asp-for="FatherName">نام پدر:</label>
+                    <input type="text" class="form-control farsi_no_number" asp-for="FatherName">
+                    <span asp-validation-for="FatherName" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="control-label" asp-for="Gender">جنسیت:</label>
+                    <select class="form-control p-lg-2 p-2 p-md-2 p-sm-2" asp-for="Gender">
+                        <option selected>انتخاب کنید</option>
+                        <option value="M">مرد</option>
+                        <option value="F">زن</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="control-label" asp-for="birthdatestring">تاریخ تولد:</label>
+                    <input class="form-control persianDataInput " asp-for="birthdatestring">
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="control-label " asp-for="BirthPlace">محل تولد:</label>
+                    <input type="text" class="form-control farsi_no_number" asp-for="BirthPlace">
+                    <span asp-validation-for="BirthPlace" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="control-label" asp-for="PhoneNumber">شماره همراه:</label>
+                    <input type="tel" class="form-control" asp-for="PhoneNumber">
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label class="control-label" asp-for="Nationality">ملیت:</label>
+                    <input type="text" class="form-control farsi_no_number" asp-for="Nationality">
+                    <span asp-validation-for="Nationality" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label class="control-label" asp-for="Province">استان</label>
+                    @Html.DropDownList("Province", null, "انتخاب کنید", new { @class = "form-control p-lg-2 p-2 p-md-2 p-sm-2" })<br/>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label class="control-label" asp-for="City">شهر</label>
+                    <select class="form-control p-lg-2 p-2 p-md-2 p-sm-2" id="CityItem"></select><br/>
+
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="control-label" asp-for="PostalCode">کدپستی:</label>
+                    <input type="text" class="form-control numeric" asp-for="PostalCode">
+                    <span asp-validation-for="PostalCode" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-md-9">
+                    <label class="control-label" asp-for="Address">آدرس محل سکونت:</label>
+                    <input type="text" class="form-control farsi" asp-for="Address">
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="control-label" asp-for="HomePhone">شماره منزل:</label>
+                    <input type="tel" class="form-control" asp-for="HomePhone">
+                    <span asp-validation-for="HomePhone" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label class="control-label" asp-for="Email">آدرس ایمیل:</label>
+                    <input type="email" class="form-control" asp-for="Email">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label class="control-label" asp-for="DegreeEducationList">مدرک تحصیلی:</label>
+                    <select class="form-control p-lg-2 p-2 p-md-2 p-sm-2" asp-for="DegreeEducation" asp-items="Model.DegreeEducationList">
+                    </select>
+                    <span asp-validation-for="DegreeEducation" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="control-label" asp-for="MilitaryStatus">وضعیت خدمت:</label>
+                    <select class="form-control p-lg-2 p-2 p-md-2 p-sm-2" asp-for="MilitaryStatus" asp-items="Model.MilitaryStatusList">
+                    </select>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label class="control-label" asp-for="Job">شغل:</label>
+                    <input type="text" class="form-control farsi_no_number" asp-for="Job">
+                    <span asp-validation-for="Job" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-9">
+                    <label class="control-label" asp-for="WorkPlace">آدرس محل کار:</label>
+                    <input type="text" class="form-control farsi_no_number" asp-for="WorkPlace">
+                    <span asp-validation-for="WorkPlace" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label class="control-label" asp-for="WorkPostalCode">کد پستی محل کار:</label>
+                    <input type="text" class="form-control numeric" asp-for="WorkPostalCode">
+                    <span asp-validation-for="WorkPostalCode" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="control-label" asp-for="WorkPhone">شماره تماس محل کار:</label>
+                    <input type="tel" class="form-control" asp-for="WorkPhone">
+                    <span asp-validation-for="WorkPhone" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="control-label" asp-for="Religion">دین:</label>
+                    <select class="form-control p-lg-2 p-2 p-md-2 p-sm-2" asp-for="Religion" asp-items="Model.ReligionList">
+                    </select>
+                    <span asp-validation-for="Religion" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="control-label" asp-for="Sect">مذهب:</label>
+                    <input type="text" class="form-control farsi_no_number" asp-for="Sect">
+                    <span asp-validation-for="Sect" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-lg-3 d-block">
+                    <button type="submit" class="shadow btn btn-success btn-lg btn-block">ذخیره</button>
+                </div>
+            </div>
+
+        </form>
+
+
+    </div>
+</section>

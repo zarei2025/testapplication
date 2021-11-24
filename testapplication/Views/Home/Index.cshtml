@@ -1,0 +1,31 @@
+﻿@model User
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<form class="contact-form col-lg-12 mx-lg-auto" asp-controller="Home" asp-action="Index">
+    <div class="form-group col-6 m-5">
+        <button type="submit" class="btn btn-block btn-primary py-2">صفحه بعد</button>
+    </div>
+
+    <div class="form-group col-12 m-2">
+        <button type="submit" class="btn btn-block btn-info py-2" asp-controller="Home" asp-action="Indextoregister">افزودن کاربر</button>
+    </div>
+
+</form>
+
+
+@if (!string.IsNullOrWhiteSpace(ViewBag.cookie))
+{
+    <script type="text/javascript">
+        window.alert("شما در یک دقیقه گذشته فعالیتی نداشته اید. باید دوباره وارد شوید.");
+    </script>
+}
+@if (!string.IsNullOrWhiteSpace(ViewBag.badcookie))
+{
+    <script type="text/javascript">
+        window.alert("مشکلی رخ داده است! دوباره وارد شوید.");
+        window.location.href = '/Home/Login';
+    </script>
+}

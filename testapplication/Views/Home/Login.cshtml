@@ -1,0 +1,56 @@
+﻿@model testapplication.Models.User
+@{
+    ViewData["Title"] = "صفحه ورود";
+}
+<section class="contact-section px-3 py-5 p-md-5">
+    <div class="container">
+        <form class="contact-form col-lg-5 mx-lg-auto " asp-controller="Home" asp-action="Login">
+            <div class="form-group col-12 m-2">
+                <label class="control-label" asp-for="NationalCode">نام کاربری:</label>
+                <input type="text" class="form-control shadow-sm" placeholder="نام کاربری خود را وارد کنید" asp-for="NationalCode">
+                <span asp-validation-for="NationalCode" class="text-danger"></span>
+            </div>
+            <div class="form-group col-12 m-2">
+                <label class="control-label" asp-for="Password">کلمه عبور:</label>
+                <input type="password" class="form-control shadow-sm" placeholder="کلمه عبور را وارد کنید" asp-for="Password">
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group col-12 m-2">
+                <label><input type="checkbox"> مرا به خاطر بسپار</label>
+            </div>
+            <div class="form-group col-12 m-2">
+                <button type="submit" class="btn btn-block btn-info shadow-sm py-2">وارد شدن</button>
+            </div>
+        </form>
+
+        <form class="contact-form col-lg-5 mx-lg-auto " asp-controller="Home">
+            <div class="form-group col-12 m-2">
+                <button asp-action="Logintoregister" class="btn btn-block btn-warning shadow-sm  py-2">ثبت نام کاربر جدید</button>
+            </div>
+
+
+        </form>
+
+
+        @if (!string.IsNullOrWhiteSpace(ViewBag.login_error))
+        {
+            <div class="alert-danger p-3 m-3">
+                <p>@ViewBag.login_error</p>
+            </div>
+        }
+    </div>
+</section>
+
+@if (!string.IsNullOrWhiteSpace(ViewBag.cookie))
+{
+    <script type="text/javascript">
+        window.alert("شما در یک دقیقه گذشته فعالیتی نداشته اید. باید دوباره وارد شوید.");
+    </script>
+}
+@if (!string.IsNullOrWhiteSpace(ViewBag.badcookie))
+{
+    <script type="text/javascript">
+        window.alert("مشکلی رخ داده است! دوباره وارد شوید.");
+        window.location.href = '/Home/Login';
+    </script>
+}
