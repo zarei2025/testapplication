@@ -43,10 +43,9 @@
         </div>
 
     </div>
-    
+
 
     <div class="row">
-        
 
 
         <div class="col-9" id="div1">
@@ -57,24 +56,24 @@
 
         <div class="col-3">
             <ul class="nav flex-column" id="titleId">
-                <li class="nav-item" >
-                    <button value="rel" id="FamilyType" class="FamilyType">rel</button>
+                <li class="nav-item">
+                    <button value="rel" id="FamilyType" class="TitleType">rel</button>
 
                 </li>
                 <li class="nav-item">
-                    <button id="DegreeEducation"class="selected">degree</button>
+                    <button id="DegreeEducation" class="selected TitleType">degree</button>
 
                 </li>
                 @*<li class="nav-item">
                     <a class="nav-link btn" href="#" id="degree">Link</a>
                 </li>*@
-               
+
             </ul>
         </div>
     </div>
 </div>
 
-<button type="button" id="saveRows" onclick="saaaveRow()" class="FamilyType">save</button>
+<button type="button" id="saveRows" onclick="saaaveRow()">save</button>
 
 <pre id="whereToPrint"></pre>
 
@@ -103,25 +102,24 @@
 </script>*@
 
 
-
 <script>
 
-   
-    $(".FamilyType").click(function(e) {
+
+    $(".TitleType").click(function(e) {
         e.preventDefault();
         var _url = '@Url.Action("aaaaVC")';
 
         $.ajax({
             type: "POST",
             url: _url,
-            data: { uid: $(this).prop("class") },
+            data: { uid: $(this).prop("id") },
 
 
             //data: {
             //    id: $(this).id,
             //    access_token: $("#rel").val()
             //},
-            success: function (result) {
+            success: function(result) {
                 //   window.location.reload(true);
                 // $("#div1").load("#div1 > *");
                 $("#div1").html(result);
@@ -133,8 +131,17 @@
     });
 </script>
 
+
+
+
+
+
+
+
+
+
 <script>
-    $("#saveRows").click(function(){
+    $("#saveRows").click(function(e) {
         var customers = [];
 
         var table = document.getElementById("myTable");
@@ -148,49 +155,99 @@
         }
 
         var _url = '@Url.Action("saveRows", "Home")';
+
+        var res;
+
         $.ajax({
+            'async': false,
             type: "POST",
             url: _url,
             data: JSON.stringify(customers),
             contentType: "application/json; charset=utf-8",
-            dataType: "json"
+            dataType: "json",
+            success: function(result) {
+                //   window.location.reload(true);
+                // $("#div1").load("#div1 > *");
+              //  alert(result);
+
+                res = result;
+                
+            },
+
+
+            error: function (result) {
+              //  res = result;
+               // alert(result);
+               // alert(result);
+
+
+            }
+
 
         });
 
-
-
-        ////Loop through the Table rows and build a JSON array.
-        //$("#myTable tbody tr").each(function () {
-        //    var row = $(this);
-        //   // var customer = {};
-        //  //  customer.index = row.find("td").eq(0).html();
-
-
-        //    if (row.find("td").eq(2).childElementCount == 0) {
-        //        customers.push(row.find("td").eq(1).html());
-        //        alert("resid");
-        //    } else {
-        //        alert(row.find("td").eq(2).hasChildNodes.length +"dasht" );
-        //    }
-        ////    customers.push(customer);
-
-        //});
-
-        //document.getElementById("whereToPrint").innerHTML = JSON.stringify(customers);
-        //Send the JSON array to Controller using AJAX.
-
+        //alert(res);
+        var _url = '@Url.Action("aaaaVC")';
+        $.ajax({
+            'async': false,
+            type: "POST",
+            url: _url,
+            data: { uid: res },
+            success: function(result) {
+                $("#div1").html(result);
+                alert(res);
+            },
+            error: function(result) {
+                alert('error');
+            
+            }
+        });
 
 
     });
 </script>
 
-<script>
-    function a() {
+<!--<script>
+    //var _url =
+
+    $.ajax({
+        url: "/Home/saveRows",
+        type: "GET",
+        dataType: "json",
         
-    }
-</script>
+        //success: function (res) {
+        //    alert(res);
+        //},
+        //error: function (res) {
+        //    alert("ackna");
+        //}
+
+    });-->
+
+@*var url = '@Url.Action("saveRows")';
+    $.get(url,
+        function (data) {
+            alert("ggggg");
+            var _url = '@Url.Action("aaaaVC")';
+
+            $.ajax({
+                type: "POST",
+                url: _url,
+                data: { uid: data },
 
 
-
-
-
+                //data: {
+                //    id: $(this).id,
+                //    access_token: $("#rel").val()
+                //},
+                success: function(result) {
+                    //   window.location.reload(true);
+                    // $("#div1").load("#div1 > *");
+                    $("#div1").html(result);
+                },
+                error: function(result) {
+                    alert('error');
+                }
+            });
+        });*@
+<!--</script>-->

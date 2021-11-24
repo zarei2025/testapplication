@@ -455,10 +455,10 @@ namespace testapplication.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult TableContent()
-        {
-            return View("TableAdmin");
-        }
+        //public IActionResult TableContent()
+        //{
+        //    return View("TableAdmin");
+        //}
 
         public IActionResult aaaaVC(string uid = "DegreeEducation")
         {
@@ -466,7 +466,7 @@ namespace testapplication.Controllers
             return ViewComponent("Tablestwo", new { uid });//it will call Follower.cs InvokeAsync, and pass id to it.
         }
 
-        public void saveRows([FromBody] List<string> values)
+        public JsonResult saveRows([FromBody] List<string> values)
         {
             List<string> title = new List<string>();
             for (int i = 0; i < values.Count; i++)
@@ -483,7 +483,7 @@ namespace testapplication.Controllers
 
             UserDataAccessLayer.updateRows(title, titleID);
 
-
+            return Json(titleID);
 
         }
 
