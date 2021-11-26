@@ -8,6 +8,7 @@ using testapplication.Models.Session;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net;
 using _0_Framework.Application;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -473,12 +474,18 @@ namespace testapplication.Controllers
             {
                 var replace = values[i].Replace("\n", "");
                 
-                title.Add(replace.Trim());
+                title.Add(WebUtility.HtmlDecode(replace).Trim());
             }
 
-            if (title.Count != title.Distinct().Count())
+            title = title.Distinct().ToList();
+            List<string> title_from_database = UserDataAccessLayer.getInfo(titleID);
+            for (int i = 0; i < title.Count; i++)
             {
-                ViewBag.Duplicates = "مورد تکراری";
+                if (title_from_database.Contains(title[i]) || title[i] == "")
+                {
+                    ViewBag.Duplicates = "موارد تکراری ثبت نشد.";
+                    title.RemoveAt(i);
+                }
             }
 
             UserDataAccessLayer.updateRows(title, titleID);

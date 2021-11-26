@@ -46,23 +46,25 @@
 
 
     <div class="row">
-
-
-        <div class="col-9" id="div1">
-
-            @*@await Component.InvokeAsync("Tablestwo")*@
-
-        </div>
-
-        <div class="col-3">
-            <ul class="nav flex-column" id="titleId">
+        <div class="col-3 pl-4">
+            <ul class="nav flex-column p-0" id="titleId">
                 <li class="nav-item">
-                    <button value="rel" id="FamilyType" class="TitleType">rel</button>
-
+                    <button value="rel" id="FamilyType" class="TitleType btn btn-block btn-info m-1">نسبت خانوادگی</button>
                 </li>
                 <li class="nav-item">
-                    <button id="DegreeEducation" class="selected TitleType">degree</button>
-
+                    <button id="DegreeEducation" class="TitleType btn btn-block btn-info m-1">مدرک تحصیلی</button>
+                </li>
+                <li class="nav-item">
+                    <button id="Religion" class="TitleType btn btn-block btn-info m-1">دین</button>
+                </li>
+                <li class="nav-item">
+                    <button id="MilitaryStatus" class="TitleType btn btn-block btn-info m-1">وضعیت خدمت</button>
+                </li>
+                <li class="nav-item">
+                    <button id="Province" class="TitleType btn btn-block btn-info m-1">استان</button>
+                </li>
+                <li class="nav-item">
+                    <button id="City" class="TitleType btn btn-block btn-info m-1">شهر</button>
                 </li>
                 @*<li class="nav-item">
                     <a class="nav-link btn" href="#" id="degree">Link</a>
@@ -70,12 +72,16 @@
 
             </ul>
         </div>
+        <div class="col-9" id="div1">
+
+            @*@await Component.InvokeAsync("Tablestwo")*@
+
+        </div>
     </div>
 </div>
 
-<button type="button" id="saveRows" onclick="saaaveRow()">save</button>
+<button type="button" id="saveRows" class="btn btn-block btn-info mt-2" onclick="saaaveRow()">save</button>
 
-<pre id="whereToPrint"></pre>
 
 @*<script>
     $("#saveRows").click(function(e) {
@@ -149,7 +155,6 @@
 
         for (var i = 0; i < allrow.length; i++) {
             if (!allrow[i].cells[2].hasChildNodes()) {
-
                 customers.push(allrow[i].cells[1].innerHTML);
             }
         }

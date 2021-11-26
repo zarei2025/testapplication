@@ -441,6 +441,7 @@ namespace testapplication.Models
             return degree;
         }
 
+       
         public static void updateRows(List<string> titles, string titleId)
         {
             using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());

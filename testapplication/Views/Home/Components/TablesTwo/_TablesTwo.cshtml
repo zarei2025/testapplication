@@ -1,31 +1,21 @@
 ﻿@model List<string>
 
 <div id="table" class="table-editable">
-    <span class="table-add float-right mb-3 mr-2">
-        <a href="#!" class="btn btn-dark text-success" onclick="addRow()">
-            <i class="fas fa-plus fa-2x" aria-hidden="true"></i>
-        </a>
-    </span>
-    <table class="table table-bordered table-responsive-md table-striped text-center" id="myTable">
+
+    <table class="table table-bordered table-sm table-striped text-center" id="myTable">
         <thead>
         <tr>
             <th>
                 ردیف
             </th>
             <th>
-
                 عنوان
-
             </th>
             <th>
-
-                status
-
+                عملیات
             </th>
-
         </tr>
         </thead>
-
         <tbody>
 
         @foreach (var item in Model)
@@ -40,21 +30,31 @@
                 </td>
 
                 <td>
-                   
-                        <button type="button" class="btn btn-danger btn-rounded btn-sm my-0" onclick="deleteRow(this)">
-                            Remove
-                        </button>
-                    
+
+                    <button type="button" class="btn btn-danger btn-rounded btn-sm my-0" onclick="deleteRow(this)">
+                        حذف
+                    </button>
+
                 </td>
 
             </tr>
         }
-            
+
         </tbody>
 
     </table>
-
+    <span class="table-add float-right mb-3 mr-2">
+        <a href="#!" class="btn btn-dark " onclick="addRow()">
+            <i class="fas fa-plus" aria-hidden="true"> &nbsp; افزودن یک سطر جدید </i>
+        </a>
+    </span>
 </div>
+@if (!string.IsNullOrWhiteSpace(ViewBag.Duplicates))
+{
+    <div class="alert-danger p-3 m-3">
+        <p>@ViewBag.Duplicates</p>
+    </div>
+}
 
 <script>
     function addRow() {
@@ -89,24 +89,24 @@
 
 @*<script>
 
-    $('#mytable').SetEditable();
+        $('#mytable').SetEditable();
 
 
-    $('#but_add').click(function() {
-        rowAddNew('mytable');
-    });
+        $('#but_add').click(function() {
+            rowAddNew('mytable');
+        });
 
-    //function editFunc() {
+        //function editFunc() {
 
-    //    document.getElementsByTagName("div").contentEditable = 'true';
-    //    document.getElementsByTagName("div").style.borderColor = "red";
+        //    document.getElementsByTagName("div").contentEditable = 'true';
+        //    document.getElementsByTagName("div").style.borderColor = "red";
 
-    //}
-    //$("#edit").onclick(function (parameters) {
+        //}
+        //$("#edit").onclick(function (parameters) {
 
-    //    alert("cdsk");
-    //    //$("div").contentEditable();
-    //    //$("div").style.border.color("#112233");
+        //    alert("cdsk");
+        //    //$("div").contentEditable();
+        //    //$("div").style.border.color("#112233");
 
-    //})
-</script>*@
+        //})
+    </script>*@
