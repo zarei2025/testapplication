@@ -21,12 +21,12 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
-                    <div contenteditable="true">
-                        @(Model.IndexOf(item) + 1)
-                    </div>
+                <td >
+                    
+                    @(Model.IndexOf(item) + 1)
+
                 </td>
-                <td>
+                <td onblur="blurRow()" onfocus="focusRow(this)">
 
                     @item
 
@@ -35,8 +35,8 @@
 
                 <td>
 
-                    <button type="button" class="btn btn-danger btn-rounded btn-sm my-0" onclick="deleteRow(this)">
-                        حذف
+                    <button type="button" class="btn btn-danger btn-rounded btn-sm my-0" onclick="editRow(this)">
+                        edit
                     </button>
 
                 </td>
@@ -74,19 +74,92 @@
     }
 </script>
 
+@*<script>
+        function editRow(r) {
+
+            var j = r.parentNode.parentNode.rowIndex;
+            var table = document.getElementById("myTable");
+            table.editRow(j);
+
+
+            for (var i = j; i < table.rows.length; i++) {
+                var x = table.rows[i].cells;
+                x[0].innerHTML = i;
+
+            }
+        }
+    </script>*@
+
 <script>
-    function deleteRow(r) {
+    function editRow(r) {
 
-        var j = r.parentNode.parentNode.rowIndex;
         var table = document.getElementById("myTable");
-        table.deleteRow(j);
-
-
-        for (var i = j; i < table.rows.length; i++) {
-            var x = table.rows[i].cells;
-            x[0].innerHTML = i;
+        
+        for (var i = 0; i < table.rows.length; i++) {
+            table.rows[i].cells[1].contentEditable = 'false';
 
         }
+        var j = r.parentNode.parentNode.rowIndex;
+        
+        // table.editRow(j);
+
+        var cell = table.rows[j].cells[1];
+        cell.contentEditable = 'true';
+
+        
+        cell.focus();
+
+        //for (var i = j; i < table.rows.length; i++) {
+        //    var x = table.rows[i].cells;
+        //    x[0].innerHTML = i;
+
+        //}
+    }
+</script>
+
+<script>
+
+    let oldVal = "";
+    
+    //let cell;
+    let table = document.getElementById("myTable");
+   let cell1 = "";
+
+    function focusRow(p) {
+
+     //   var table = document.getElementById("myTable");
+      //  var j = p.parentNode.parentNode.rowIndex;
+         
+
+        p.style.backgroundColor = "rgba(100, 255, 0, 0.5)";
+
+        cell1 = p.cells[1];
+     alert(cell1);
+        oldVal = cell1.innerHTML;
+
+
+    }
+
+    function blurRow() {
+
+        // var oldval = cell.innerHTML;
+        // if(cell.focus())
+        
+        
+       
+        
+        // table.editRow(j);
+
+      //cell = table.rows[j].cells[1];
+
+        var newVal = cell1.innerHTML;
+
+        if (newVal == oldVal) {
+            cell1.style.backgroundColor = "rgba(255, 100, 0, 0.5)";
+        }
+        
+
+        
     }
 </script>
 
