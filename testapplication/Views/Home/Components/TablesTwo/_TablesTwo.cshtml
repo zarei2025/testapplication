@@ -21,7 +21,11 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@(Model.IndexOf(item) + 1)</td>
+                <td>
+                    <div contenteditable="true">
+                        @(Model.IndexOf(item) + 1)
+                    </div>
+                </td>
                 <td>
 
                     @item
