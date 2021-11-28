@@ -22,14 +22,13 @@
         {
             <tr>
                 <td >
-                    
+
                     @(Model.IndexOf(item) + 1)
 
                 </td>
-                <td onblur="blurRow()" onfocus="focusRow(this)">
+                <td onblur="blurRow(this)" onfocus="focusRow(this)">
 
                     @item
-
 
                 </td>
 
@@ -94,19 +93,19 @@
     function editRow(r) {
 
         var table = document.getElementById("myTable");
-        
+
         for (var i = 0; i < table.rows.length; i++) {
             table.rows[i].cells[1].contentEditable = 'false';
 
         }
         var j = r.parentNode.parentNode.rowIndex;
-        
+
         // table.editRow(j);
 
         var cell = table.rows[j].cells[1];
         cell.contentEditable = 'true';
 
-        
+
         cell.focus();
 
         //for (var i = j; i < table.rows.length; i++) {
@@ -119,47 +118,53 @@
 
 <script>
 
-    let oldVal = "";
-    
+    var old_title = "";
+    var title = [];
+    var edited_title = [];
     //let cell;
-    let table = document.getElementById("myTable");
-   let cell1 = "";
+    //var table = document.getElementById("myTable");
+    //var cell_value = "";
 
     function focusRow(p) {
 
-     //   var table = document.getElementById("myTable");
-      //  var j = p.parentNode.parentNode.rowIndex;
-         
+        //   var table = document.getElementById("myTable");
+        var number_cell = p.parentNode.cells[0];
+        var title_cell = p.parentNode.cells[1];
 
-        p.style.backgroundColor = "rgba(100, 255, 0, 0.5)";
+      //  number_cell.style.backgroundColor = "rgba(100, 255, 0, 0.3)";
+        title_cell.style.backgroundColor = "rgba(100, 255, 0, 0.3)";
 
-        cell1 = p.cells[1];
-     alert(cell1);
-        oldVal = cell1.innerHTML;
-
+        //cell1 = p.cells[1];
+        //alert(cell1);
+        old_title = title_cell.innerHTML;
+       //cell_value=old
 
     }
 
-    function blurRow() {
+    function blurRow(p) {
 
         // var oldval = cell.innerHTML;
         // if(cell.focus())
-        
-        
-       
-        
+
+
         // table.editRow(j);
 
-      //cell = table.rows[j].cells[1];
-
-        var newVal = cell1.innerHTML;
-
-        if (newVal == oldVal) {
-            cell1.style.backgroundColor = "rgba(255, 100, 0, 0.5)";
+        //cell = table.rows[j].cells[1];
+        var number_cell = p.parentNode.cells[0];
+        var title_cell = p.parentNode.cells[1];
+        var new_title = title_cell.innerHTML;
+      //  alert(title_cell.innerHTML + " ///" +  oldVal);
+        if (new_title != old_title) {
+            title.add(old_title);
+            edited_title.add(new_title);
+            title_cell.style.backgroundColor = "rgba(255, 255, 0, 0.4)";
+            number_cell.style.backgroundColor = "rgba(255, 255, 0, 0.4)";
+        } else {
+            title_cell.style.backgroundColor = "transparent";
+            number_cell.style.backgroundColor = "transparent";
         }
-        
 
-        
+
     }
 </script>
 

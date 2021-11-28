@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Muhammad\\Source\\Repos\\testapplication\\testapplication\\testapplication.csproj": {}
+    "C:\\Users\\zande\\Source\\Repos\\zarei2025\\testapplication\\testapplication\\testapplication.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Muhammad\\Source\\Repos\\testapplication\\testapplication\\testapplication.csproj": {
+    "C:\\Users\\zande\\Source\\Repos\\zarei2025\\testapplication\\testapplication\\testapplication.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Muhammad\\Source\\Repos\\testapplication\\testapplication\\testapplication.csproj",
+        "projectUniqueName": "C:\\Users\\zande\\Source\\Repos\\zarei2025\\testapplication\\testapplication\\testapplication.csproj",
         "projectName": "testapplication",
-        "projectPath": "C:\\Users\\Muhammad\\Source\\Repos\\testapplication\\testapplication\\testapplication.csproj",
-        "packagesPath": "C:\\Users\\Muhammad\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Muhammad\\Source\\Repos\\testapplication\\testapplication\\obj\\",
+        "projectPath": "C:\\Users\\zande\\Source\\Repos\\zarei2025\\testapplication\\testapplication\\testapplication.csproj",
+        "packagesPath": "C:\\Users\\zande\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\zande\\Source\\Repos\\zarei2025\\testapplication\\testapplication\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Muhammad\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\zande\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
