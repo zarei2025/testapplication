@@ -34,8 +34,7 @@
 *::after {
     box-sizing: border-box
 }
-
-html {
+ html {
     font-family: IranSans;
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;
@@ -10435,8 +10434,6 @@ hr {
     background: #62d4fa;
     color: #fff;
     overflow-y: auto;
-    scrollbar-color: rgba(0, 0, 0, 0.2) #62d4fa;
-    scrollbar-width: thin
 }
 
 .header::-webkit-scrollbar {
@@ -11646,7 +11643,7 @@ body.dark-mode .table-striped tbody tr:nth-of-type(odd) {
 
 body.dark-mode .header {
     background: #1e2a3a;
-    scrollbar-color: rgba(255, 255, 255, 0.05) #1e2a3a
+   
 }
 
 body.dark-mode .header::-webkit-scrollbar {
@@ -11974,3 +11971,8 @@ body {
      content: "*";
      color: red;
  }
+
+[contenteditable="true"] {
+      border: 10px solid #5D6BA7;
+  }
+

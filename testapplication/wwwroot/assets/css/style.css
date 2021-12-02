@@ -36,3 +36,6 @@ body {
 .section-title{
     padding-right: 1.5rem;
 }
+[contenteditable="true"] {
+    background-color: red;
+}

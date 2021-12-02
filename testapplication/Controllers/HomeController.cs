@@ -467,12 +467,12 @@ namespace testapplication.Controllers
             return ViewComponent("Tablestwo", new { uid });//it will call Follower.cs InvokeAsync, and pass id to it.
         }
 
-        public JsonResult saveRows([FromBody] List<string> values)
+        public JsonResult saveRows([FromBody] List<string> new_title_array)
         {
             List<string> title = new List<string>();
-            for (int i = 0; i < values.Count; i++)
+            for (int i = 0; i < new_title_array.Count; i++)
             {
-                var replace = values[i].Replace("\n", "");
+                var replace = new_title_array[i].Replace("\n", "");
                 
                 title.Add(WebUtility.HtmlDecode(replace).Trim());
             }
