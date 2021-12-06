@@ -49,7 +49,6 @@ $(document).ready(function () {
             const method = form.attr("method").toLocaleLowerCase();
             const url = form.attr("action");
             var action = form.attr("data-action");
-
             if (method === "get") {
                 const data = form.serializeArray();
                 $.get(url,
@@ -59,6 +58,7 @@ $(document).ready(function () {
                     });
             } else {
                 var formData = new FormData(this);
+                formData.append("","");
                 $.ajax({
                     url: url,
                     type: "post",
@@ -71,7 +71,7 @@ $(document).ready(function () {
                         CallBackHandler(data, action, form);
                     },
                     error: function (data) {
-                        alert("2222222222222.");
+                        alert("error");
                     }
                 });
             }
@@ -85,10 +85,12 @@ function CallBackHandler(data, action, form) {
             alert(data.Message);
             break;
         case "Refresh":
-            if (data.isSuccedded) {
-                window.location.reload();
+            if (data != null) {
+                $("#"+data).click();
+                // window.location.reload();
+                hideModal();
             } else {
-                alert(data.message);
+                alert("عنوان وارد شده تکراری است.");
             }
             break;
         case "RefereshList":

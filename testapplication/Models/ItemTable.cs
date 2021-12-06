@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,6 +9,7 @@ namespace testapplication.Models
     public class ItemTable
     {
         public int  Id{ get; set; }
+        [Required(ErrorMessage = "عنوان نمیتواند خالی باشد")]
         public string Title { get; set; }
         public string TypeTitle { get; set; }
 
@@ -20,6 +22,10 @@ namespace testapplication.Models
         {
             Id = id;
             Title = title;
+        }
+
+        public ItemTable()
+        {
         }
     }
 }

@@ -426,7 +426,7 @@ namespace testapplication.Models
         {
             using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());
 
-            string query = $"select * from t{uid}";
+            string query = $"select * from t{uid} where Id > 0";
             SqlCommand cmd = new SqlCommand(query, con);
             con.Open();
             SqlDataReader dr = cmd.ExecuteReader();
@@ -436,43 +436,99 @@ namespace testapplication.Models
             {
                 int id = Convert.ToInt32(dr["Id"]);
                 string title = dr["Title"].ToString();
-                ItemTable item = new ItemTable(id,title);
+                ItemTable item = new ItemTable(id, title);
                 itemTables.Add(item);
             }
 
             return itemTables;
         }
 
-       
-        public static void updateRows(List<string> titles, string titleId)
+        public static List<string> getItemTitle(string uid)
         {
             using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());
 
-            string s = null;
-            foreach (var title in titles)
+            string query = $"select Title from t{uid} where Id > 0";
+            SqlCommand cmd = new SqlCommand(query, con);
+            con.Open();
+            SqlDataReader dr = cmd.ExecuteReader();
+            List<string> titleList =new List<string>();
+            while (dr.Read())
             {
-                s += $"('{title}'),";
+               string title = dr["Title"].ToString();
+               titleList.Add(title);
+
             }
 
-            string query =
-                    $"Insert Into t{titleId}(Title) values {s}";
-            query = query.Remove(query.Length - 1);
-            
+            return titleList;
+        }
+        public static ItemTable getItem(string uid, int id)
+        {
+            using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());
 
-                con.Open();
-                SqlCommand cmd = new SqlCommand(query, con);
+            string query = $"select * from t{uid} where Id = {id}";
+            SqlCommand cmd = new SqlCommand(query, con);
+            con.Open();
+            SqlDataReader dr = cmd.ExecuteReader();
+            // List<ItemTable> itemTables = new List<ItemTable>();
+            ItemTable item=new ItemTable();
+            while (dr.Read())
+            {
+              //  int id = Convert.ToInt32(dr["Id"]);
+                string title = dr["Title"].ToString();
+                item.Title = title;
+                item.TypeTitle = uid;
+                item.Id = id;
+                //  itemTables.Add(item);
+            }
 
-                try
-                {
-                    cmd.ExecuteNonQuery();
-                }
-                catch (Exception e)
-                {
-                }
-                finally
-                {
-                    con.Close();
-                }
+            return item;
+        }
+
+
+        public static void InsertItem(ItemTable item)
+        {
+            using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());
+
+            string query = $"Insert Into t{item.TypeTitle}(Title) values('{item.Title}')";
+
+
+            con.Open();
+            SqlCommand cmd = new SqlCommand(query, con);
+
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+        public static void UpdateItem(ItemTable item)
+        {
+            using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());
+
+            string query = $"Update t{item.TypeTitle} set Title = '{item.Title}' where Id = {item.Id}";
+
+
+            con.Open();
+            SqlCommand cmd = new SqlCommand(query, con);
+
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+            }
+            finally
+            {
+                con.Close();
             }
         }
     }
+}

@@ -32,11 +32,11 @@ namespace testapplication.Controllers
         [HttpPost]
         public IActionResult Login(User user)
         {
-
             if (user.NationalCode == "0000000000")
             {
                 return RedirectToAction("Management");
             }
+
             var userNationalCode = user.NationalCode;
             var userPassword = user.Password;
             if (string.IsNullOrWhiteSpace(userNationalCode) || string.IsNullOrWhiteSpace(userPassword))
@@ -103,7 +103,6 @@ namespace testapplication.Controllers
                 if (CheckCookie("checkstring"))
                 {
                     user = UserDataAccessLayer.GetUserBy(idUser);
-
                 }
                 else
                 {
@@ -157,7 +156,6 @@ namespace testapplication.Controllers
 
             if (idUser != 0)
             {
-
                 var userId = UserDataAccessLayer.GetUserIdBy(userNationalCode);
                 if (userId == -1)
                 {
@@ -170,8 +168,6 @@ namespace testapplication.Controllers
                     ViewBag.nationalcode_unique_error = "کد ملی وارد شده تکراری است.";
                     return View(user);
                 }
-                
-
             }
             else
             {
@@ -336,7 +332,6 @@ namespace testapplication.Controllers
             userType.User.BirthDate = Tools.ToGeorgianDateTime(Tools.ToEnglishNumber(userType.User.birthdatestring));
 
 
-
             if (idSubUser != 0)
             {
                 UserDataAccessLayer.UpdateUser(userType.User);
@@ -426,7 +421,7 @@ namespace testapplication.Controllers
             }
             else
             {
-                string DBCheckstring = SessionDataAccessLayer.GetSessionCheckstring(cookieString,15);
+                string DBCheckstring = SessionDataAccessLayer.GetSessionCheckstring(cookieString, 15);
                 if (DBCheckstring == null)
                 {
                     ViewBag.badcookie = "changed cookie";
@@ -464,19 +459,55 @@ namespace testapplication.Controllers
         public IActionResult aaaaVC(string uid = "DegreeEducation")
         {
             titleID = uid;
-            return ViewComponent("Tablestwo", new { uid });//it will call Follower.cs InvokeAsync, and pass id to it.
+            return ViewComponent("Tablestwo", new { uid }); //it will call Follower.cs InvokeAsync, and pass id to it.
         }
-
+        
         [HttpGet]
         public IActionResult CreateItem()
         {
             return PartialView("CreateItem", new ItemTable(titleID));
         }
-        //[HttpGet]
-        //public IActionResult CreateItem(ItemTable item)
-        //{
-        //    return View();
-        //}
+
+        [HttpPost]
+        public JsonResult CreateItem(ItemTable item)
+        {
+            item.TypeTitle = titleID;
+            List<string> title_from_database = UserDataAccessLayer.getItemTitle(titleID);
+
+            if (title_from_database.Contains(item.Title))
+            {
+            //    ViewBag.Duplicates1 = "موارد تکراری ثبت نشد.";
+                return new JsonResult(null);
+            }
+
+
+            UserDataAccessLayer.InsertItem(item);
+            return new JsonResult(titleID);
+        }
+
+        [HttpGet]
+        public IActionResult EditItem(int id)
+        {
+            ItemTable item = UserDataAccessLayer.getItem(titleID,id);
+            return PartialView("EditItem", item);
+        }
+
+        [HttpPost]
+        public JsonResult EditItem(ItemTable item)
+        {
+            item.TypeTitle = titleID;
+            List<string> title_from_database = UserDataAccessLayer.getItemTitle(titleID);
+
+            if (title_from_database.Contains(item.Title))
+            {
+              //  ViewBag.Duplicates2 = "موارد تکراری ثبت نشد.";
+                return new JsonResult(null);
+            }
+
+
+            UserDataAccessLayer.UpdateItem(item);
+            return new JsonResult(titleID);
+        }
 
         //public JsonResult saveRows([FromBody] List<string> new_title_array)
         //{
@@ -517,7 +548,7 @@ namespace testapplication.Controllers
             }
             else
             {
-                string dbCheckstring = SessionDataAccessLayer.GetSessionCheckstring(cookieString,15);
+                string dbCheckstring = SessionDataAccessLayer.GetSessionCheckstring(cookieString, 15);
                 if (dbCheckstring == null)
                 {
                     ViewBag.badcookie = "changed cookie";
@@ -536,9 +567,8 @@ namespace testapplication.Controllers
             }
         }
 
-        public void AddCookie(long userid,string cookieName)
+        public void AddCookie(long userid, string cookieName)
         {
-
             string checkstring = DateTime.UtcNow.Ticks.ToString();
             Session session = new Session(userid, checkstring, DateTime.Now);
             SessionDataAccessLayer.AddSession(session);
@@ -550,7 +580,6 @@ namespace testapplication.Controllers
             {
                 Expires = DateTime.Now.AddSeconds(15)
             });
-
         }
 
         public void Province_Bind()

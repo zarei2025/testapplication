@@ -34,9 +34,13 @@
 
                 <td>
 
-                    <button type="button" class="btn btn-warning btn-sm my-0" onclick="editRow(this)">
-                        ویرایش عنوان
-                    </button>
+                    @* <button type="button" class="btn btn-warning btn-sm my-0" onclick="editRow(this)">
+            ویرایش
+        </button>
+                    *@
+                    <a href="#showmodal=@Url.Action("EditItem","Home",new{id = item.Id})" class="btn btn-warning">
+                        ویرایش
+                    </a>
 
                 </td>
 
