@@ -15,7 +15,7 @@
      <link rel="stylesheet" href="~/assets/css/theme-1.css">
     <link rel="stylesheet" href="~/assets/css/style.css">
     <link rel="stylesheet" href="~/assets/css/persian-datepicker.min.css">
-    <script src="jquery-3.5.1.min.js"></script>
+    <link rel="stylesheet" href="~/assets/css/rwd-table.min.css"/>
 
 
 
@@ -35,6 +35,8 @@
 <script src="~/assets/fontawesome/js/persian-date.min.js"></script>
 <script src="~/assets/fontawesome/js/persian-datepicker.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script src="~/assets/js/site.js"></script>
+<script src="~/assets/js/rwd-table.min.js"></script>
 
 @*<link href="~\assets\plugins\bootstrap\js\bootstrap.min.js" rel="stylesheet">
 <script src="D:\universityprojectmuhammad\last2\last2\testapplication\testapplication\wwwroot\lib\jquery\dist\jquery.min.js"></script>
@@ -47,7 +49,13 @@
     @RenderBody()
 </div>
 
-
+    
+<div id="MainModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content" id="ModalContent">
+        </div>
+    </div>
+</div>
 <!-- Javascript -->
 @*<script src="~/assets/plugins/jquery-3.4.1.min.js"></script>
         <script src="~/assets/plugins/popper.min.js"></script>

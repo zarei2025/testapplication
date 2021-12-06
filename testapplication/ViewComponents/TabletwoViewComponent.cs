@@ -16,16 +16,16 @@ namespace testapplication.ViewComponents
 
         public IViewComponentResult Invoke(string uid)
         {
-            List<string> degree;
+            List<ItemTable> itemTables;
             if (uid == "0")
             {
-                degree = UserDataAccessLayer.getInfo("DegreeEducation");
+                itemTables = UserDataAccessLayer.getInfo("DegreeEducation");
 
-                return View("_TablesTwo", degree);
+                return View("_TablesTwo", itemTables);
             }
-            degree = UserDataAccessLayer.getInfo(uid);
+            itemTables = UserDataAccessLayer.getInfo(uid);
 
-            return View("_TablesTwo", degree);
+            return View("_TablesTwo", itemTables);
         }
     }
 }

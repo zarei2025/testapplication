@@ -467,32 +467,43 @@ namespace testapplication.Controllers
             return ViewComponent("Tablestwo", new { uid });//it will call Follower.cs InvokeAsync, and pass id to it.
         }
 
-        public JsonResult saveRows([FromBody] List<string> new_title_array)
+        [HttpGet]
+        public IActionResult CreateItem()
         {
-            List<string> title = new List<string>();
-            for (int i = 0; i < new_title_array.Count; i++)
-            {
-                var replace = new_title_array[i].Replace("\n", "");
-                
-                title.Add(WebUtility.HtmlDecode(replace).Trim());
-            }
-
-            title = title.Distinct().ToList();
-            List<string> title_from_database = UserDataAccessLayer.getInfo(titleID);
-            for (int i = 0; i < title.Count; i++)
-            {
-                if (title_from_database.Contains(title[i]) || title[i] == "")
-                {
-                    ViewBag.Duplicates = "موارد تکراری ثبت نشد.";
-                    title.RemoveAt(i);
-                }
-            }
-
-            UserDataAccessLayer.updateRows(title, titleID);
-
-            return Json(titleID);
-
+            return PartialView("CreateItem", new ItemTable(titleID));
         }
+        //[HttpGet]
+        //public IActionResult CreateItem(ItemTable item)
+        //{
+        //    return View();
+        //}
+
+        //public JsonResult saveRows([FromBody] List<string> new_title_array)
+        //{
+        //    List<string> title = new List<string>();
+        //    for (int i = 0; i < new_title_array.Count; i++)
+        //    {
+        //        var replace = new_title_array[i].Replace("\n", "");
+
+        //        title.Add(WebUtility.HtmlDecode(replace).Trim());
+        //    }
+
+        //    title = title.Distinct().ToList();
+        //    List<string> title_from_database = UserDataAccessLayer.getInfo(titleID);
+        //    for (int i = 0; i < title.Count; i++)
+        //    {
+        //        if (title_from_database.Contains(title[i]) || title[i] == "")
+        //        {
+        //            ViewBag.Duplicates = "موارد تکراری ثبت نشد.";
+        //            title.RemoveAt(i);
+        //        }
+        //    }
+
+        //    UserDataAccessLayer.updateRows(title, titleID);
+
+        //    return Json(titleID);
+
+        //}
 
         public bool CheckCookie(string cookieName)
         {

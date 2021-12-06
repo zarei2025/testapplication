@@ -1419,3 +1419,4 @@ C:\Users\zande\Source\Repos\zarei2025\testapplication\testapplication\obj\Debug\
 C:\Users\zande\Source\Repos\zarei2025\testapplication\testapplication\obj\Debug\net5.0\testapplication.Views.pdb
 C:\Users\zande\Source\Repos\zarei2025\testapplication\testapplication\obj\Debug\net5.0\testapplication.csproj.CopyComplete
 C:\Users\zande\Source\Repos\zarei2025\testapplication\testapplication\obj\Debug\net5.0\testapplication.genruntimeconfig.cache
+C:\Users\zande\Source\Repos\zarei2025\testapplication\testapplication\obj\Debug\net5.0\Razor\Views\Home\CreateItem.cshtml.g.cs

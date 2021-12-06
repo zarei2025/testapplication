@@ -422,7 +422,7 @@ namespace testapplication.Models
             }
         }
 
-        public static List<string> getInfo(string uid)
+        public static List<ItemTable> getInfo(string uid)
         {
             using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());
 
@@ -430,15 +430,17 @@ namespace testapplication.Models
             SqlCommand cmd = new SqlCommand(query, con);
             con.Open();
             SqlDataReader dr = cmd.ExecuteReader();
-            List<string> degree = new List<string>();
+            List<ItemTable> itemTables = new List<ItemTable>();
 
             while (dr.Read())
             {
-                String title = dr["Title"].ToString();
-                degree.Add(title);
+                int id = Convert.ToInt32(dr["Id"]);
+                string title = dr["Title"].ToString();
+                ItemTable item = new ItemTable(id,title);
+                itemTables.Add(item);
             }
 
-            return degree;
+            return itemTables;
         }
 
        
