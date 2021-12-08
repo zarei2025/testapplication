@@ -41,7 +41,10 @@
                     <a href="#showmodal=@Url.Action("EditItem","Home",new{id = item.Id})" class="btn btn-warning">
                         ویرایش
                     </a>
+                    <a  class="btn btn-danger">
+                        حذف                    <span class="badge">@item.UseCount</span>
 
+                    </a>
                 </td>
 
             </tr>

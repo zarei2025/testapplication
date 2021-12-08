@@ -12,6 +12,7 @@ namespace testapplication.Models
         [Required(ErrorMessage = "عنوان نمیتواند خالی باشد")]
         public string Title { get; set; }
         public string TypeTitle { get; set; }
+        public int UseCount { get; set; }
 
         public ItemTable(string typeTitle)
         {
@@ -22,6 +23,11 @@ namespace testapplication.Models
         {
             Id = id;
             Title = title;
+        }
+
+        public void SetUseCount(int count)
+        {
+            UseCount = count;
         }
 
         public ItemTable()

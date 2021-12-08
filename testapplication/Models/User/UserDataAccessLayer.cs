@@ -426,7 +426,7 @@ namespace testapplication.Models
         {
             using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());
 
-            string query = $"select * from t{uid} where Id > 0";
+            string query = $"select * from t{uid} where Id > 0 and IsDeleted = 0";
             SqlCommand cmd = new SqlCommand(query, con);
             con.Open();
             SqlDataReader dr = cmd.ExecuteReader();
@@ -436,18 +436,38 @@ namespace testapplication.Models
             {
                 int id = Convert.ToInt32(dr["Id"]);
                 string title = dr["Title"].ToString();
+                int count = getUseCount(id);
                 ItemTable item = new ItemTable(id, title);
+                item.SetUseCount(count);
                 itemTables.Add(item);
             }
 
             return itemTables;
+        }
+        public static int getUseCount(int id)
+        {
+            using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());
+
+            string query = $"select COUNT(*) AS Number from tUserType where TypeId = {id}";
+            SqlCommand cmd = new SqlCommand(query, con);
+            con.Open();
+            SqlDataReader dr = cmd.ExecuteReader();
+            List<ItemTable> itemTables = new List<ItemTable>();
+            int count=0;
+            while (dr.Read())
+            {
+                count = Convert.ToInt32(dr["Number"]);
+
+            }
+
+            return count;
         }
 
         public static List<string> getItemTitle(string uid)
         {
             using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());
 
-            string query = $"select Title from t{uid} where Id > 0";
+            string query = $"select Title from t{uid} where Id > 0 ";
             SqlCommand cmd = new SqlCommand(query, con);
             con.Open();
             SqlDataReader dr = cmd.ExecuteReader();
@@ -465,7 +485,7 @@ namespace testapplication.Models
         {
             using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());
 
-            string query = $"select * from t{uid} where Id = {id}";
+            string query = $"select * from t{uid} where Id = {id} ";
             SqlCommand cmd = new SqlCommand(query, con);
             con.Open();
             SqlDataReader dr = cmd.ExecuteReader();
@@ -513,6 +533,29 @@ namespace testapplication.Models
             using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());
 
             string query = $"Update t{item.TypeTitle} set Title = '{item.Title}' where Id = {item.Id}";
+
+
+            con.Open();
+            SqlCommand cmd = new SqlCommand(query, con);
+
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+        public static void UpdateIsDeletedItem(ItemTable item, bool IsDeleted)
+        {
+            using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());
+
+            string query = $"Update t{item.TypeTitle} set IsDeleted = {IsDeleted} where Id = {item.Id}";
 
 
             con.Open();

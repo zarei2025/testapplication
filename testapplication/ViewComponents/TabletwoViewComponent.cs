@@ -20,7 +20,7 @@ namespace testapplication.ViewComponents
             if (uid == "0")
             {
                 itemTables = UserDataAccessLayer.getInfo("DegreeEducation");
-
+                
                 return View("_TablesTwo", itemTables);
             }
             itemTables = UserDataAccessLayer.getInfo(uid);

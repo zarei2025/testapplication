@@ -90,7 +90,14 @@ function CallBackHandler(data, action, form) {
                 // window.location.reload();
                 hideModal();
             } else {
-                alert("عنوان وارد شده تکراری است.");
+                swal({
+                    title: "خطا",
+                    text: "عنوان تکراری است!",
+                    type: "warning",
+                    showCancelButton: true
+
+                });
+                //alert("عنوان وارد شده تکراری است.");
             }
             break;
         case "RefereshList":

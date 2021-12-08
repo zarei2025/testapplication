@@ -118,34 +118,6 @@
 </script>*@
 
 
-<script>
-
-
-    $(".TitleType").click(function(e) {
-        e.preventDefault();
-        var _url = '@Url.Action("aaaaVC")';
-
-        $.ajax({
-            type: "POST",
-            url: _url,
-            data: { uid: $(this).prop("id") },
-
-
-            //data: {
-            //    id: $(this).id,
-            //    access_token: $("#rel").val()
-            //},
-            success: function(result) {
-                //   window.location.reload(true);
-                // $("#div1").load("#div1 > *");
-                $("#div1").html(result);
-            },
-            error: function(result) {
-                alert('error');
-            }
-        });
-    });
-</script>
 
 
 
@@ -156,7 +128,8 @@
 
 
 
-<script>
+
+@*<script>
     $("#saveRows").click(function(e) {
         var customers = [];
 
@@ -220,7 +193,7 @@
 
 
     });
-</script>
+</script>*@
 
 <!--<script>
     //var _url =
