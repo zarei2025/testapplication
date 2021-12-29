@@ -111,7 +111,7 @@ function CallBackHandler(data, action, form) {
         case "setValue":
             {
                 const element = form.data("element");
-                $(`#${element}`).html(data);
+              //  $(`#${element}`).html(data);
             }
             break;
         default:
@@ -162,12 +162,12 @@ $(document).on("click",
     function () {
         const button = $(this);
         const form = button.data("request-form");
-        const data = $(`#${form}`).serialize();
+      //  const data = $(`#${form}`).serialize();
         let url = button.data("request-url");
         const method = button.data("request-method");
         const field = button.data("request-field-id");
         if (field !== undefined) {
-            const fieldValue = $(`#${field}`).val();
+         //   const fieldValue = $(`#${field}`).val();
             url = url + "/" + fieldValue;
         }
         if (button.data("request-confirm") == true) {

@@ -1,4 +1,4 @@
-﻿@model UserType
+﻿@model User
 
 @{
     ViewData["Title"] = "صفحه مدیریت";
@@ -12,34 +12,38 @@
         <p>@ViewBag.Duplicates</p>
     </div>
 }
+
+<script src="~/assets/js/site.js"></script>
+
 <div class="container">
     <div class="card mb-2">
         <h5 class="card-header">اطلاعات ادمین</h5>
         <div class="card-body text-center row">
 
+            @if (ViewBag.AdminUser != null)
+            {
+                <div class="form-group col-md-4 ">
+                    <label class="control-label font-weight-bold">نام و نام خانوادگی:</label>
+                    <label id="info_label" class="control-label">@ViewBag.AdminUser.FirstName @ViewBag.AdminUser.LastName</label>
+                </div>
+                <div class="form-group col-md-3 ">
+                    <label class="control-label font-weight-bold">کدملی:</label>
+                    <label class="control-label">@ViewBag.AdminUser.NationalCode</label>
+                </div>
 
-            <div class="form-group col-md-4">
-                <label class="control-label font-weight-bold">نام و نام خانوادگی:</label>
-                <label class="control-label"></label>
-            </div>
-            <div class="form-group col-md-3">
-                <label class="control-label font-weight-bold">کدملی:</label>
-                <label class="control-label"></label>
-            </div>
-
-            <div class="form-group col-md-2">
-                <form>
-                    <button class="btn btn-warning btn-block">ویرایش کاربر</button>
-                </form>
-            </div>
-            <div class="form-group col-md-3">
-                <form>
-                    <button class="btn btn-warning btn-block">
-                        <span class="glyphicon glyphicon-lock"></span>تغییر کلمه عبور
-                    </button>
-                </form>
-            </div>
-
+                <div class="form-group col-lg-2">
+                    <form>
+                        <button asp-action="Register" class="btn btn-warning btn-block">ویرایش کاربر</button>
+                    </form>
+                </div>
+                <div class="form-group col-lg-2 ">
+                    <form>
+                        <button asp-action="ChangePassword" class="btn btn-warning btn-block">
+                            <span class="glyphicon glyphicon-lock"></span>تغییر کلمه عبور
+                        </button>
+                    </form>
+                </div>
+            }
         </div>
 
     </div>
@@ -49,13 +53,13 @@
         <div class="col-3 pl-4">
             <ul class="nav flex-column p-0" id="titleId">
                 <li class="nav-item">
-                    <button value="rel" id="FamilyType" class="TitleType btn btn-block btn-info m-1">نسبت خانوادگی</button>
+                    <button value="rel" id="FamilyType" class="TitleType btn btn-block btn-info m-1 ">نسبت خانوادگی</button>
                 </li>
                 <li class="nav-item">
-                    <button id="DegreeEducation" class="TitleType btn btn-block btn-info m-1">مدرک تحصیلی</button>
+                    <button id="DegreeEducation" class="TitleType btn btn-block btn-info m-1 ">مدرک تحصیلی</button>
                 </li>
                 <li class="nav-item">
-                    <button id="Religion" class="TitleType btn btn-block btn-info m-1">دین</button>
+                    <button id="Religion" class="TitleType btn btn-block btn-info m-1 ">دین</button>
                 </li>
                 <li class="nav-item">
                     <button id="MilitaryStatus" class="TitleType btn btn-block btn-info m-1">وضعیت خدمت</button>
@@ -64,33 +68,36 @@
                     <button id="Province" class="TitleType btn btn-block btn-info m-1">استان</button>
                 </li>
                 <li class="nav-item">
-                    <button id="City" class="TitleType btn btn-block btn-info m-1">شهر</button>
+                    <button id="User" class="TitleType btn btn-block btn-info m-1">کاربران</button>
                 </li>
+                @*<li class="nav-item">
+                    <button id="City" class="TitleType btn btn-block btn-info m-1">شهر</button>
+                </li>*@
                 @*<li class="nav-item">
                     <a class="nav-link btn" href="#" id="degree">Link</a>
                 </li>*@
+                
+
 
             </ul>
         </div>
         <div class="col-9" id="div1">
-            
+
 
             @*@await Component.InvokeAsync("Tablestwo")*@
 
         </div>
-        
-        <div id="MainModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-            <div class="modal-dialog">
-                <div class="modal-content" id="ModalContent">
-                </div>
-            </div>
-        </div>
-        
+
+
+
 
     </div>
 </div>
 
-<button type="button" id="saveRows" class="btn btn-block btn-info mt-2" onclick="saaaveRow()">save</button>
+
+
+
+@*<button type="button" id="saveRows" class="btn btn-block btn-info mt-2" onclick="saaaveRow()">save</button>*@
 
 
 @*<script>
@@ -175,7 +182,7 @@
         });
 
         //alert(res);
-        var _url = '@Url.Action("aaaaVC")';
+        var _url = '@Url.Action("SelectTable")';
         $.ajax({
             'async': false,
             type: "POST",
@@ -216,7 +223,7 @@
     $.get(url,
         function (data) {
             alert("ggggg");
-            var _url = '@Url.Action("aaaaVC")';
+            var _url = '@Url.Action("SelectTable")';
 
             $.ajax({
                 type: "POST",

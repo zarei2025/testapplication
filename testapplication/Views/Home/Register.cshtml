@@ -20,6 +20,8 @@
     <div class="container">
         <form class="contact-form col-lg-12 mx-lg-auto" asp-controller="Home" asp-action="Register">
             <div class="form-row  justify-content-center">
+                <input type="hidden" asp-for="Id">
+
                 <div class="form-group required col-md-3">
                     <label class="control-label" asp-for="NationalCode">کدملی:</label>
                     <input type="text" class="form-control numeric" placeholder="کدملی ده رقمی خود را وارد کنید" asp-for="NationalCode" required="این فیلد اجباری است.">
@@ -71,13 +73,14 @@
 
                 <div class="form-group col-md-3">
                     <label class="control-label" asp-for="Province">استان</label>
-                    @Html.DropDownList("Province", null, "انتخاب کنید", new { @class = "form-control p-lg-2 p-2 p-md-2 p-sm-2" })<br/>
+                    <select id="Province" class="form-control p-lg-2 p-2 p-md-2 p-sm-2" asp-for="Province" asp-items="Model.ProvinceList">
+                    </select>
                 </div>
 
                 <div class="form-group col-md-3">
                     <label class="control-label" asp-for="City">شهر</label>
-                    <select class="form-control p-lg-2 p-2 p-md-2 p-sm-2" id="CityItem"></select><br/>
-
+                    <input type="hidden" asp-for="City" id="hiddencity"/>
+                    <select class="form-control p-lg-2 p-2 p-md-2 p-sm-2" asp-for="City" id="CityItem"></select><br/>
                 </div>
                 <div class="form-group col-md-3">
                     <label class="control-label" asp-for="PostalCode">کدپستی:</label>

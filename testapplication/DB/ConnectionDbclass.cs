@@ -5,7 +5,7 @@ namespace testapplication.DB
 {
     public  class ConnectionDbclass
     {
-        private static string _connectionString =
+        public static string _connectionString =
             "Data Source=.;Initial Catalog=TestDb;User ID=sa;Password=12345678";
 
         public static  SqlConnection con = new SqlConnection(_connectionString);

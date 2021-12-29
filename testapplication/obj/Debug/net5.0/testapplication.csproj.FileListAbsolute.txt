@@ -1421,3 +1421,9 @@ C:\Users\zande\Source\Repos\zarei2025\testapplication\testapplication\obj\Debug\
 C:\Users\zande\Source\Repos\zarei2025\testapplication\testapplication\obj\Debug\net5.0\testapplication.genruntimeconfig.cache
 C:\Users\zande\Source\Repos\zarei2025\testapplication\testapplication\obj\Debug\net5.0\Razor\Views\Home\CreateItem.cshtml.g.cs
 C:\Users\zande\Source\Repos\zarei2025\testapplication\testapplication\obj\Debug\net5.0\Razor\Views\Home\EditItem.cshtml.g.cs
+C:\Users\zande\Source\Repos\zarei2025\testapplication\testapplication\obj\Debug\net5.0\Razor\Views\Home\Components\RelativeTable\_RelativeTable.cshtml.g.cs
+C:\Users\zande\Source\Repos\zarei2025\testapplication\testapplication\obj\Debug\net5.0\Razor\Views\Home\Components\DegreeEducationTable\_DegreeEducationTable.cshtml.g.cs
+C:\Users\zande\Source\Repos\zarei2025\testapplication\testapplication\obj\Debug\net5.0\Razor\Views\Home\Components\ReligionTable\_ReligionTable.cshtml.g.cs
+C:\Users\zande\Source\Repos\zarei2025\testapplication\testapplication\obj\Debug\net5.0\Razor\Views\Home\Components\MilitaryStatusTable\_MilitaryStatusTable.cshtml.g.cs
+C:\Users\zande\Source\Repos\zarei2025\testapplication\testapplication\obj\Debug\net5.0\Razor\Views\Home\Components\StateTable\_StateTable.cshtml.g.cs
+C:\Users\zande\Source\Repos\zarei2025\testapplication\testapplication\obj\Debug\net5.0\Razor\Views\Home\Components\UsersTable\_UsersTable.cshtml.g.cs

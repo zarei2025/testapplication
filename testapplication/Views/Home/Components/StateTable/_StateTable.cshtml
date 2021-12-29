@@ -1,0 +1,99 @@
+﻿@model List<testapplication.Models.Tables_Model.CityItem>
+
+<div class="col-md-12 d-lg-inline-flex row">
+    <label class="form-group col-md-1 mx-2">استان</label>
+    @Html.DropDownList("Province2", null, "انتخاب کنید", new { @class = "form-group form-control col-md-6 p-lg-2 p-2 p-md-2 p-sm-2" })
+        <a href="#showmodal=@Url.Action("CreateItem")" style="display: none" id="insert-btn" class="btn btn-dark col-md-3 mx-2">
+            <i class="fas fa-plus" aria-hidden="true"> &nbsp; افزودن یک سطر جدید </i>
+        </a>
+  
+</div>
+<div id="table" class="table-editable">
+
+    <table class="table table-bordered table-sm table-striped text-center" id="myTable">
+        <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                شهر
+            </th>
+            <th>
+                عملیات
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+       
+        </tbody>
+
+    </table>
+   
+</div>
+
+<script>
+    $(document).ready(function() {
+
+        $("#Province2").change(function () {
+            var id = $(this).val();
+            if (id > 0) {
+                $("#insert-btn").show();
+            } else {
+                $("#insert-btn").hide();
+            }
+          //  alert(id);
+            $("#myTable tbody").empty();
+            $.get("City_Bind",
+                { state_id: id },
+                function(data) {
+                    // append('<tr><td>Record1</td><td>Record2</td></tr>');
+                    var v = "";
+
+                    $.each(data,
+                        function(i, v1) {
+                            //v += "<option value=" + v1.value + ">" + v1.text + "</option>";
+                            @*v += "<tr>" +
+                                "<td>" +
+                                i +
+                                "</td>" +
+                                "<td>" +
+                                v1.text +
+                                "</td>"+"<td>";
+                            var newLink = $("<a/>", {
+                                href : "#showmodal=@Url.Action("CreateItem")",
+                                text: "some text",
+                                class: "btn btn-dark"
+                            });
+                            v += (newLink+"</td>");*@
+
+                            var row = document.createElement('tr');
+                            td1 = document.createElement('td');
+                            td1.innerHTML = i+1;
+                            td2 = document.createElement('td');
+                            td2.innerHTML = v1.text;
+                            td3 = document.createElement('td');
+                            edittag = document.createElement('a');
+                            edittag.innerHTML = "ویرایش";
+                            edittag.setAttribute('href', '#showmodal=@Url.Action("CreateItem")');
+                            edittag.setAttribute('class', 'btn btn-warning mx-2');
+                            deletetag = document.createElement('a');
+                            deletetag.innerHTML = "حذف";
+                         //   deletetag.setAttribute('href', '#showmodal=@Url.Action("CreateItem")');
+                            deletetag.setAttribute('class', 'btn btn-danger');
+                            deletespan = document.createElement('span');
+                            deletespan.setAttribute('class', 'badge bg-white text-dark');
+                            deletespan.innerHTML = 0;
+                            deletetag.appendChild(deletespan);
+                            td3.appendChild(edittag);
+                            td3.appendChild(deletetag);
+                            row.appendChild(td1);
+                            row.appendChild(td2);
+                            row.appendChild(td3);
+                            $("#myTable tbody").append(row);
+                        });
+
+                });
+        });
+    });
+</script>

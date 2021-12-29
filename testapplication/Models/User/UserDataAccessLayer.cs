@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Text;
 using testapplication.DB;
+using testapplication.Models.Tables_Model;
 
 namespace testapplication.Models
 {
@@ -184,10 +185,12 @@ namespace testapplication.Models
                 int degreeEducation = Convert.ToInt32(dr["DegreeEducation_id"]);
                 bool Status = Convert.ToBoolean(dr["Status"]);
                 bool MainUser = Convert.ToBoolean(dr["MainUser"]);
+                
                 User user = new User(NationalCode, FirstName, LastName, Status, MainUser, FatherName,
                     PhoneNumber, HomePhone, Gender, Province, City, Address, PostalCode, Email, BirthDate, BirthPlace,
                     degreeEducation, Job, WorkPlace, WorkPostalCode, WorkPhone, Nationality, Religion, Sect,
                     MilitaryStatus);
+                user.Id = Id;
                 return user;
             }
 
@@ -215,6 +218,30 @@ namespace testapplication.Models
                 User user = new User(NationalCode, Password, FirstName, LastName);
                 user.Id = Id;
                 return user;
+            }
+
+            return null;
+        }
+
+        public static RoleItem getRole(string userNationalCode)
+        {
+            using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());
+
+            string query = "select tRole.Id , tRole.Role from tUser " +
+            "join tUserRole on tUser.Id = tUserRole.User_Id "+
+            "join tRole on tUserRole.Role_Id = tRole.Id "+
+            "where tUser.NationalCode = @nationalcode ";
+            SqlCommand cmd = new SqlCommand(query, con);
+            cmd.Parameters.AddWithValue("@nationalcode", userNationalCode);
+            con.Open();
+            SqlDataReader dr = cmd.ExecuteReader();
+
+            while (dr.Read())
+            {
+                int Id = Convert.ToInt32(dr["Id"]);
+                string title = dr["Role"].ToString();
+                RoleItem role = new RoleItem(Id, title);
+                return role;
             }
 
             return null;
@@ -327,7 +354,7 @@ namespace testapplication.Models
         {
             using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());
 
-            string query = $"select * from {table}";
+            string query = $"select * from {table} where IsDeleted = 0";
 
             SqlCommand cmd = new SqlCommand(query, con);
             con.Open();
@@ -444,6 +471,185 @@ namespace testapplication.Models
 
             return itemTables;
         }
+
+        public static List<RelativeItem> GetRelativeItems(string uid)
+        {
+            using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());
+
+            string query = $"select * from t{uid} where Id > 0 and IsDeleted = 0";
+            SqlCommand cmd = new SqlCommand(query, con);
+            con.Open();
+            SqlDataReader dr = cmd.ExecuteReader();
+            List<RelativeItem> items = new List<RelativeItem>();
+
+            while (dr.Read())
+            {
+                int id = Convert.ToInt32(dr["Id"]);
+                string title = dr["Title"].ToString();
+                int count = getUseCount(id);
+                RelativeItem item = new RelativeItem(id, title);
+                item.TypeTitle = "FamilyType";
+                item.SetUseCount(count);
+                items.Add(item);
+
+            }
+
+            return items;
+        }
+
+        public static List<ReligionItem> GetReligionItems(string uid)
+        {
+            using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());
+            string query = $"select * from t{uid} where Id > 0 and IsDeleted = 0";
+            SqlCommand cmd = new SqlCommand(query, con);
+            con.Open();
+            SqlDataReader dr = cmd.ExecuteReader();
+            List<ReligionItem> items = new List<ReligionItem>();
+
+            while (dr.Read())
+            {
+                int id = Convert.ToInt32(dr["Id"]);
+                string title = dr["Title"].ToString();
+                int count = getUseCount(id);
+                ReligionItem item = new ReligionItem(id, title);
+                item.SetUseCount(count);
+                items.Add(item);
+            }
+
+            return items;
+        }
+
+        public static List<DegreeEducationItem> GetDegreeEducationItems(string uid)
+        {
+            using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());
+            string query = $"select * from t{uid} where Id > 0 and IsDeleted = 0";
+            SqlCommand cmd = new SqlCommand(query, con);
+            con.Open();
+            SqlDataReader dr = cmd.ExecuteReader();
+            List<DegreeEducationItem> items = new List<DegreeEducationItem>();
+
+            while (dr.Read())
+            {
+                int id = Convert.ToInt32(dr["Id"]);
+                string title = dr["Title"].ToString();
+                int count = getUseCount(id);
+                DegreeEducationItem item = new DegreeEducationItem(id, title);
+                item.SetUseCount(count);
+                items.Add(item);
+            }
+
+            return items;
+        }
+
+        public static List<UsersItem> GetUsersItems(string uid)
+        {
+            using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());
+            string query = "select tUser.Id, tUser.FirstName+tUser.LastName as FullName ,tUser.FatherName , tUser.NationalCode , tUser.IsDeleted, tRole.Role " +
+                           "from  tuser  left join tUserRole on tUser.Id = tUserRole.User_Id " +
+                           "left join tRole on tRole.Id = tUserRole.Role_Id " +
+                           "where (tRole.Role != 'admin' or tRole.Role is null) and tUser.password is not null ";
+            SqlCommand cmd = new SqlCommand(query, con);
+            con.Open();
+            SqlDataReader dr = cmd.ExecuteReader();
+            List<UsersItem> items = new List<UsersItem>();
+
+            while (dr.Read())
+            {
+                int id = Convert.ToInt32(dr["Id"]);
+                string title = dr["FullName"].ToString();
+                string FatherName = dr["FatherName"].ToString();
+                string NationalCode = dr["NationalCode"].ToString();
+                string Role = dr["Role"].ToString();
+                bool IsDeleted = Convert.ToBoolean(dr["IsDeleted"]);
+                int count = getFamilyCount(id);
+                UsersItem item = new UsersItem(id, title,NationalCode,FatherName,Role,count,IsDeleted);
+                items.Add(item);
+            }
+
+            return items;
+        }
+
+        public static List<MilitaryStatusItem> GetMilitaryStatusItems(string uid)
+        {
+            using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());
+            string query = $"select * from t{uid} where Id > 0 and IsDeleted = 0";
+            SqlCommand cmd = new SqlCommand(query, con);
+            con.Open();
+            SqlDataReader dr = cmd.ExecuteReader();
+            List<MilitaryStatusItem> items = new List<MilitaryStatusItem>();
+
+            while (dr.Read())
+            {
+                int id = Convert.ToInt32(dr["Id"]);
+                string title = dr["Title"].ToString();
+                int count = getUseCount(id);
+                MilitaryStatusItem item = new MilitaryStatusItem(id, title);
+                item.SetUseCount(count);
+                items.Add(item);
+            }
+
+            return items;
+        }
+
+        //public static ProvinceItem GetStateItems(int id)
+        //{
+        //    using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());
+        //    string query = "select p.Id pid , p.Title ptitle , c.Id cid , c.Title ctitle from tProvince p" +
+        //    "join tCity c on c.Province_id = p.Id"+
+        //    $"where p.id = {id} and p.IsDeleted = 0 and c.IsDeleted = 0";
+        //    SqlCommand cmd = new SqlCommand(query, con);
+        //    con.Open();
+        //    SqlDataReader dr = cmd.ExecuteReader();
+        // //   List<ProvinceItem> items = new List<ProvinceItem>();
+        //    ProvinceItem provinceItem = new ProvinceItem();
+        //    bool f = true;
+        //    while (dr.Read())
+        //    {
+        //        int pid = Convert.ToInt32(dr["pid"]);
+        //        string ptitle = dr["ptitle"].ToString();
+        //        int cid = Convert.ToInt32(dr["cid"]);
+        //        string ctitle = dr["ctitle"].ToString();
+        //        // int count = getUseCount(id);
+        //        if (f)
+        //        {
+        //            provinceItem = new ProvinceItem(id, ptitle);
+        //            f = false;
+        //        }
+
+        //        CityItem cityItem = new CityItem(cid, ctitle);
+        //        provinceItem.CityItems.Add(cityItem);
+        //       // provinceItem.SetUseCount(count);
+        //       // items.Add(provinceItem);
+        //    }
+
+        //    return provinceItem;
+        //}
+        public static List<CityItem> GetStateItems(int id)
+        {
+            using SqlConnection con = new SqlConnection(ConnectionDbclass._connectionString);
+            string query = "select c.Id cid , c.Title ctitle from tCity c " +
+                           $"where c.Province_id = {id} and c.IsDeleted = 0";
+            SqlCommand cmd = new SqlCommand(query, con);
+            con.Open();
+            SqlDataReader dr = cmd.ExecuteReader();
+            //   List<ProvinceItem> items = new List<ProvinceItem>();
+            List<CityItem> cityItems = new List<CityItem>();
+            while (dr.Read())
+            {
+                int cid = Convert.ToInt32(dr["cid"]);
+                string ctitle = dr["ctitle"].ToString();
+                int count = getUseCount(cid);
+
+
+                CityItem cityItem = new CityItem(cid, ctitle);
+                cityItems.Add(cityItem);
+                // provinceItem.SetUseCount(count);
+                // items.Add(provinceItem);
+            }
+
+            return cityItems;
+        }
+
         public static int getUseCount(int id)
         {
             using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());
@@ -452,16 +658,34 @@ namespace testapplication.Models
             SqlCommand cmd = new SqlCommand(query, con);
             con.Open();
             SqlDataReader dr = cmd.ExecuteReader();
-            List<ItemTable> itemTables = new List<ItemTable>();
-            int count=0;
+          //  List<ItemTable> itemTables = new List<ItemTable>();
+            int count = 0;
             while (dr.Read())
             {
                 count = Convert.ToInt32(dr["Number"]);
-
             }
 
             return count;
         }
+
+        public static int getFamilyCount(int id)
+        {
+            using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());
+
+            string query = $"select COUNT(*) AS Number from tUserType where ParentId= {id}";
+            SqlCommand cmd = new SqlCommand(query, con);
+            con.Open();
+            SqlDataReader dr = cmd.ExecuteReader();
+           // List<ItemTable> itemTables = new List<ItemTable>();
+            int count = 0;
+            while (dr.Read())
+            {
+                count = Convert.ToInt32(dr["Number"]);
+            }
+
+            return count;
+        }
+
 
         public static List<string> getItemTitle(string uid)
         {
@@ -471,17 +695,17 @@ namespace testapplication.Models
             SqlCommand cmd = new SqlCommand(query, con);
             con.Open();
             SqlDataReader dr = cmd.ExecuteReader();
-            List<string> titleList =new List<string>();
+            List<string> titleList = new List<string>();
             while (dr.Read())
             {
-               string title = dr["Title"].ToString();
-               titleList.Add(title);
-
+                string title = dr["Title"].ToString();
+                titleList.Add(title);
             }
 
             return titleList;
         }
-        public static ItemTable getItem(string uid, int id)
+
+        public static Item getItem(string uid, int id)
         {
             using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());
 
@@ -490,10 +714,10 @@ namespace testapplication.Models
             con.Open();
             SqlDataReader dr = cmd.ExecuteReader();
             // List<ItemTable> itemTables = new List<ItemTable>();
-            ItemTable item=new ItemTable();
+            Item item = new Item();
             while (dr.Read())
             {
-              //  int id = Convert.ToInt32(dr["Id"]);
+                //  int id = Convert.ToInt32(dr["Id"]);
                 string title = dr["Title"].ToString();
                 item.Title = title;
                 item.TypeTitle = uid;
@@ -505,13 +729,11 @@ namespace testapplication.Models
         }
 
 
-        public static void InsertItem(ItemTable item)
+        public static void InsertItem(Item item)
         {
-            using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());
+            using SqlConnection con = new SqlConnection(ConnectionDbclass._connectionString);
 
             string query = $"Insert Into t{item.TypeTitle}(Title) values('{item.Title}')";
-
-
             con.Open();
             SqlCommand cmd = new SqlCommand(query, con);
 
@@ -519,7 +741,7 @@ namespace testapplication.Models
             {
                 cmd.ExecuteNonQuery();
             }
-            catch (Exception e)
+            catch (Exception)
             {
             }
             finally
@@ -528,7 +750,7 @@ namespace testapplication.Models
             }
         }
 
-        public static void UpdateItem(ItemTable item)
+        public static void UpdateItem(Item item)
         {
             using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());
 
@@ -551,11 +773,12 @@ namespace testapplication.Models
             }
         }
 
-        public static void UpdateIsDeletedItem(ItemTable item, bool IsDeleted)
+
+        public static void UpdateIsDeletedItem(int id,string title, bool IsDeleted)
         {
             using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());
 
-            string query = $"Update t{item.TypeTitle} set IsDeleted = {IsDeleted} where Id = {item.Id}";
+            string query = $"Update t{title} set IsDeleted = '{IsDeleted}' where Id = {id}";
 
 
             con.Open();
@@ -573,5 +796,8 @@ namespace testapplication.Models
                 con.Close();
             }
         }
+
+
+       
     }
 }

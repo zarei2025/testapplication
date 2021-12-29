@@ -1,0 +1,62 @@
+﻿@model List<testapplication.Models.Tables_Model.DegreeEducationItem>
+
+<div id="table" class="table-editable">
+    <span class="table-add float-right mb-3 mr-2">
+        <a href="#showmodal=@Url.Action("CreateItem")" class="btn btn-dark">
+            <i class="fas fa-plus" aria-hidden="true"> &nbsp; افزودن یک سطر جدید </i>
+        </a>
+    </span>
+    <table class="table table-bordered table-sm table-striped text-center" id="myTable">
+        <thead>
+            <tr>
+                <th>
+                    #
+                </th>
+                <th>
+                    سطح تحصیلات
+                </th>
+                <th>
+                    عملیات
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+
+                        @(Model.IndexOf(item) + 1)
+
+                    </td>
+                    <td onblur="blurRow(this)" onfocus="focusRow(this)">
+
+                        @item.Title
+
+                    </td>
+
+                    <td>
+
+                        @* <button type="button" class="btn btn-warning btn-sm my-0" onclick="editRow(this)">
+                                ویرایش
+                            </button>
+                        *@
+                        <a href="#showmodal=@Url.Action("EditItem","Home",new{id=item.Id})" class="btn btn-warning">
+                            ویرایش
+                        </a>
+                        <a class="btn btn-danger">
+                            حذف                    <span class="badge bg-white text-dark">@item.UseCount</span>
+
+                        </a>
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>
+

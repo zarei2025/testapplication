@@ -1,0 +1,90 @@
+﻿@model List<testapplication.Models.Tables_Model.UsersItem>
+
+
+<div id="table" class="table-editable">
+
+    <table class="table table-bordered table-sm table-striped text-center" id="myTable">
+        <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                نام و نام خانوادگی
+            </th>
+            <th>
+                نام پدر
+            </th>
+            <th>
+                کدملی
+            </th>
+            <th>
+                نقش
+            </th>
+            <th>
+                افراد تحت تکفل
+            </th>
+            <th>
+                عملیات
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+
+                    @(Model.IndexOf(item) + 1)
+
+                </td>
+                <td onblur="blurRow(this)" onfocus="focusRow(this)">
+
+                    @item.Title
+
+                </td>
+                <td onblur="blurRow(this)" onfocus="focusRow(this)">
+
+                    @item.FatherName
+
+                </td>
+                <td onblur="blurRow(this)" onfocus="focusRow(this)">
+                    @item.NationalCode
+                </td>
+                <td onblur="blurRow(this)" onfocus="focusRow(this)">
+                    @item.RoleTitle
+                </td>
+                <td onblur="blurRow(this)" onfocus="focusRow(this)">
+                    @item.FamilyInsertedCount
+                </td>
+
+
+                <td>
+                    <a href="@Url.Action("RegisterUser", "Home", new { id = item.Id })" class="btn btn-warning">
+                        ویرایش
+                    </a>
+                    @if (!item.IsDeleted)
+                    {
+                        <a class="btn btn-danger">
+                            غیرفعال کردن
+
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-success">
+                            فعال کردن
+
+                        </a>
+                    }
+                </td>
+
+            </tr>
+        }
+
+        </tbody>
+
+    </table>
+
+</div>
