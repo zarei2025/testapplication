@@ -1,13 +1,21 @@
 ﻿@model List<testapplication.Models.Tables_Model.CityItem>
 
-<div class="col-md-12 d-lg-inline-flex row">
+<div class="col-md-12 d-lg-inline-flex">
     <label class="form-group col-md-1 mx-2">استان</label>
-    @Html.DropDownList("Province2", null, "انتخاب کنید", new { @class = "form-group form-control col-md-6 p-lg-2 p-2 p-md-2 p-sm-2" })
-        <a href="#showmodal=@Url.Action("CreateItem")" style="display: none" id="insert-btn" class="btn btn-dark col-md-3 mx-2">
+    @Html.DropDownList("Province2", null, "انتخاب کنید", new {@class = "form-group form-control col-md-3 col-sm-12 col-12 col-lg-3 p-2"})
+    @*<a href="#showmodal=@Url.Action("CreateItem")" style="display: none" id="insert-btn" class="btn btn-dark col-md-3 mx-2">
             <i class="fas fa-plus" aria-hidden="true"> &nbsp; افزودن یک سطر جدید </i>
-        </a>
-  
+        </a>*@
 </div>
+<form class="contact-form row mx-lg-auto" id="insert-btn" style="display: none">
+    <div class="form-group col-5 mx-1">
+        <a href="@Url.Action("CreateItem", "Home")" class="btn btn-dark">
+            افزودن یک سطر جدید
+        </a>
+    </div>
+</form>
+
+
 <div id="table" class="table-editable">
 
     <table class="table table-bordered table-sm table-striped text-center" id="myTable">
@@ -25,24 +33,24 @@
         </tr>
         </thead>
         <tbody>
-       
+
         </tbody>
 
     </table>
-   
+
 </div>
 
 <script>
     $(document).ready(function() {
 
-        $("#Province2").change(function () {
+        $("#Province2").change(function() {
             var id = $(this).val();
             if (id > 0) {
                 $("#insert-btn").show();
             } else {
                 $("#insert-btn").hide();
             }
-          //  alert(id);
+            //  alert(id);
             $("#myTable tbody").empty();
             $.get("City_Bind",
                 { state_id: id },
@@ -66,20 +74,19 @@
                                 class: "btn btn-dark"
                             });
                             v += (newLink+"</td>");*@
-
                             var row = document.createElement('tr');
                             td1 = document.createElement('td');
-                            td1.innerHTML = i+1;
+                            td1.innerHTML = i + 1;
                             td2 = document.createElement('td');
                             td2.innerHTML = v1.text;
                             td3 = document.createElement('td');
                             edittag = document.createElement('a');
                             edittag.innerHTML = "ویرایش";
-                            edittag.setAttribute('href', '#showmodal=@Url.Action("CreateItem")');
+                            edittag.setAttribute('href', '@Url.Action("EditItem")');
                             edittag.setAttribute('class', 'btn btn-warning mx-2');
                             deletetag = document.createElement('a');
                             deletetag.innerHTML = "حذف";
-                         //   deletetag.setAttribute('href', '#showmodal=@Url.Action("CreateItem")');
+                            deletetag.setAttribute('href', '@Url.Action("DeleteItem")');
                             deletetag.setAttribute('class', 'btn btn-danger');
                             deletespan = document.createElement('span');
                             deletespan.setAttribute('class', 'badge bg-white text-dark');

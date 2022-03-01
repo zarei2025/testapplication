@@ -4,7 +4,6 @@ namespace testapplication.Models.Tables_Model
 {
     public class MilitaryStatusItem:Item
     {
-        public int UseCount { get; set; }
 
         public MilitaryStatusItem(string typeTitle)
         {
@@ -17,10 +16,6 @@ namespace testapplication.Models.Tables_Model
             Title = title;
         }
 
-        public void SetUseCount(int count)
-        {
-            UseCount = count;
-        }
 
         public MilitaryStatusItem()
         {

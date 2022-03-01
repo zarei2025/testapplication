@@ -40,7 +40,7 @@
     </a>
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <div id="user_information" style="display: none" class="nav-item dropdown">
-            <a id="user_name_info" class="nav-link dropdown-toggle" href="#"  data-toggle="dropdown">
+            <a id="user_name_info" class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
 
             </a>
             <div class="dropdown-menu">
@@ -86,13 +86,32 @@
 
 <script>
 
+    function getCookie(cname) {
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
     $(document).ready(function() {
-        var cookie = document.cookie;
-        //   alert(!cookie);
-        if (cookie) {
+        let username = getCookie("checkstring");
+
+        if (username != "") {
             $("#user_information").show();
             $("#user_name_info").text($('#info_label').text());
-            
+
+        } else {
+            $("#user_information").hide();
+
         }
 
     });
@@ -165,6 +184,7 @@
         $("#Province").change(function() {
             var id = $(this).val();
             $("#CityItem").empty();
+            alert("dsfsfsdf");
             $.get("City_Bind",
                 { state_id: id },
                 function(data) {
@@ -181,10 +201,10 @@
     });
 </script>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
 
-        $("#CityItem").change(function () {
-            document.getElementById("hiddencity").value= $(this).val();;
+        $("#CityItem").change(function() {
+            document.getElementById("hiddencity").value = $(this).val();;
         });
     });
 </script>
@@ -201,10 +221,11 @@
                 return true;
             }
         }
-    
+
         return false;
 
     }
+
     $(document).ready(function() {
         var id = document.getElementById("Province").value;
         var cityid = document.getElementById("hiddencity").value;
@@ -260,22 +281,22 @@
 
 @*<script>
 
-            $("#rel1").click(function (e) {
-                e.preventDefault();
-                $.ajax({
-                    type: "POST",
-                    url: "/Home/Managment/",
-                    data: {
-                        id: $(this).id // < note use of 'this' here
-                    },
-                    success: function (result) {
-                        alert('ok');
-                    },
-                    error: function (result) {
-                        alert('error');
-                    }
-                });
-            });
+        $("#rel1").click(function (e) {
+        e.preventDefault();
+        $.ajax({
+        type: "POST",
+        url: "/Home/Managment/",
+        data: {
+        id: $(this).id // < note use of 'this' here
+        },
+        success: function (result) {
+        alert('ok');
+        },
+        error: function (result) {
+        alert('error');
+        }
+        });
+        });
         </script>*@
 
 </body>

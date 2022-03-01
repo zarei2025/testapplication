@@ -643,6 +643,7 @@ namespace testapplication.Models
 
                 CityItem cityItem = new CityItem(cid, ctitle);
                 cityItems.Add(cityItem);
+                cityItem.UseCount=count;
                 // provinceItem.SetUseCount(count);
                 // items.Add(provinceItem);
             }
@@ -687,19 +688,26 @@ namespace testapplication.Models
         }
 
 
-        public static List<string> getItemTitle(string uid)
+        public static List<Item> GetAllItem(string uid)
         {
             using SqlConnection con = new SqlConnection(ConnectionDbclass.GetConnectionString());
 
-            string query = $"select Title from t{uid} where Id > 0 ";
+            string query = $"select Id, Title ,IsDeleted  from t{uid} where Id > 0";
             SqlCommand cmd = new SqlCommand(query, con);
             con.Open();
             SqlDataReader dr = cmd.ExecuteReader();
-            List<string> titleList = new List<string>();
+            List<Item> titleList = new List<Item>();
             while (dr.Read())
             {
+                int id = Convert.ToInt32(dr["Id"]);
                 string title = dr["Title"].ToString();
-                titleList.Add(title);
+                bool isDeleted = Convert.ToBoolean(dr["IsDeleted"]);
+                Item item = new Item();
+                item.Title = title;
+                item.IsDeleted = isDeleted;
+                item.Id = id;
+                item.TypeTitle = uid;
+                titleList.Add(item);
             }
 
             return titleList;
@@ -722,6 +730,7 @@ namespace testapplication.Models
                 item.Title = title;
                 item.TypeTitle = uid;
                 item.Id = id;
+                item.UseCount = getUseCount(id);
                 //  itemTables.Add(item);
             }
 

@@ -1,0 +1,43 @@
+﻿@model Item
+
+<div class="modal-header">
+    <h5 class="modal-title">حذف عنوان</h5>
+</div>
+
+<form asp-controller="Home" asp-action="DeleteItem">
+
+    <div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <p> آیا از حذف این عنوان اطمینان دارید؟</p>
+                    <label asp-for="Title" class="control-label">عنوان</label>
+                    <input readonly="readonly" type="text" class="form-control" asp-for="Title">
+                    <input type="hidden" asp-for="UseCount">
+                    @if (!string.IsNullOrWhiteSpace(ViewBag.usecountnotzero_delete))
+                    {
+                        <div class="alert-danger">
+                            <strong>خطا!</strong>
+                            <p>
+                                @ViewBag.usecountnotzero_delete
+                            </p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        @if (!string.IsNullOrWhiteSpace(ViewBag.usecountnotzero_delete))
+        {
+            <button type="submit" class="btn btn-secondary" disabled="disabled">حذف</button>
+        }
+        else
+        {
+            <button type="submit" class="btn btn-danger">حذف</button>
+        }
+        <a href="@Url.Action("cancel_to_managment", "Home")" class="btn btn-dark mx-2">انصراف</a>
+
+    </div>
+
+</form>

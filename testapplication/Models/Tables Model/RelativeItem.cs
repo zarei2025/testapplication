@@ -4,7 +4,6 @@ namespace testapplication.Models.Tables_Model
 {
     public class RelativeItem:Item
     {
-        public int UseCount { get; set; }
 
 
         public RelativeItem(int id, string title)
@@ -13,10 +12,7 @@ namespace testapplication.Models.Tables_Model
             Title = title;
         }
 
-        public void SetUseCount(int count)
-        {
-            UseCount = count;
-        }
+        
 
     }
 }

@@ -7,7 +7,6 @@ namespace testapplication.Models.Tables_Model
 {
     public class RoleItem:Item
     {
-        public int UseCount { get; set; }
 
 
         public RoleItem(int id, string title)
@@ -16,9 +15,6 @@ namespace testapplication.Models.Tables_Model
             Title = title;
         }
 
-        public void SetUseCount(int count)
-        {
-            UseCount = count;
-        }
+     
     }
 }

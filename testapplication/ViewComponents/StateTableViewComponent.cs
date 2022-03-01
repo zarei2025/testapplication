@@ -19,14 +19,14 @@ namespace testapplication.ViewComponents
 
         public IViewComponentResult Invoke(string uid)
         {
-            List<CityItem> cityItems;
+            List<CityItem> cityItems= new List<CityItem> { };
             if (uid == "0")
             {
               //  relativeItems = UserDataAccessLayer.getInfo("DegreeEducation");
 
                // return View("_RelativeTable", relativeItems);
             }
-            cityItems = UserDataAccessLayer.GetStateItems(10);
+            //cityItems = UserDataAccessLayer.GetStateItems(10);
 
             return View("_StateTable", cityItems);
         }

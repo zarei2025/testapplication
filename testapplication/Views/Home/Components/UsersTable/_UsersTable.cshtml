@@ -66,14 +66,14 @@
                     </a>
                     @if (!item.IsDeleted)
                     {
-                        <a class="btn btn-danger">
+                        <a href="@Url.Action("DisableUser", "Home", new { id = item.Id })"  class="btn btn-danger">
                             غیرفعال کردن
 
                         </a>
                     }
                     else
                     {
-                        <a class="btn btn-success">
+                        <a href="@Url.Action("EnableUser", "Home", new { id = item.Id })"  class="btn btn-success">
                             فعال کردن
 
                         </a>

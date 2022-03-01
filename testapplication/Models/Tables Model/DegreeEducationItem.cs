@@ -4,7 +4,6 @@ namespace testapplication.Models.Tables_Model
 {
     public class DegreeEducationItem:Item
     {
-        public int UseCount { get; set; }
 
         public DegreeEducationItem(string typeTitle)
         {
@@ -15,11 +14,6 @@ namespace testapplication.Models.Tables_Model
         {
             Id = id;
             Title = title;
-        }
-
-        public void SetUseCount(int count)
-        {
-            UseCount = count;
         }
 
         public DegreeEducationItem()

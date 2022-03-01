@@ -13,7 +13,9 @@ namespace testapplication.Models
         [Required(ErrorMessage = "عنوان نمیتواند خالی باشد")]
         public string Title { get; set; }
         public string TypeTitle { get; set; }
+        public int UseCount { get; set; }
 
+        public bool IsDeleted { get; set; }
         public Item()
         {
         }
@@ -29,6 +31,11 @@ namespace testapplication.Models
         public Item(string typeTitle)
         {
             TypeTitle = typeTitle;
+        }
+
+        public void SetUseCount(int count)
+        {
+            UseCount = count;
         }
     }
 }

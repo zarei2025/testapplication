@@ -8,8 +8,6 @@ namespace testapplication.Models.Tables_Model
         public string FatherName { get; set; }
         public string RoleTitle { get; set; }
         public int FamilyInsertedCount { get; set; }
-        public bool IsDeleted { get; set; }
-        public int UseCount { get; set; }
 
 
 

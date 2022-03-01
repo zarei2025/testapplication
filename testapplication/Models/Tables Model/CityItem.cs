@@ -5,7 +5,7 @@ namespace testapplication.Models.Tables_Model
     public class CityItem:Item
     {
 
-        public int UseCount { get; set; }
+        public int province_id { get; set; }
 
 
         public CityItem(string typeTitle)
@@ -19,10 +19,7 @@ namespace testapplication.Models.Tables_Model
             Title = title;
         }
 
-        public void SetUseCount(int count)
-        {
-            UseCount = count;
-        }
+
 
         public CityItem()
         {

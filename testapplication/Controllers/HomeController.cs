@@ -7,11 +7,10 @@ using testapplication.Models;
 using testapplication.Models.Session;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using _0_Framework.Application;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using testapplication.Models.Tables_Model;
-
-
 
 
 namespace testapplication.Controllers
@@ -24,7 +23,7 @@ namespace testapplication.Controllers
         private static long idSubUser;
         BaseQuery baseQuery = new BaseQuery();
         private static string titleID;
-
+        private static string from_page;
 
         [HttpGet]
         public IActionResult Login()
@@ -34,6 +33,7 @@ namespace testapplication.Controllers
                 //Response.Cookies.["checkstring"].Expires = DateTime.Now.AddDays(-1);
                 Response.Cookies.Delete("checkstring");
             }
+
             return View();
         }
 
@@ -63,11 +63,12 @@ namespace testapplication.Controllers
                     AddCookie(idUser, "checkstring");
                     return RedirectToAction("Management");
                 }
+
                 AddCookie(idUser, "checkstring");
                 return RedirectToAction("FamilyList");
             }
 
-            ViewBag.login_error = "اظلاعات وارد شده صحیح نمیباشد.";
+            ViewBag.login_error = "اطلاعات وارد شده صحیح نمیباشد.";
             return View(user);
         }
 
@@ -106,8 +107,9 @@ namespace testapplication.Controllers
 
 
         [HttpGet]
-        public IActionResult Register()
+        public IActionResult Register(string page_name = "")
         {
+            from_page = page_name;
             Province_Bind();
 
             User user;
@@ -116,7 +118,7 @@ namespace testapplication.Controllers
             {
                 if (CheckCookie("checkstring"))
                 {
-                    if (idUserItem !=0)
+                    if (idUserItem != 0)
                     {
                         user = UserDataAccessLayer.GetUserBy(idUserItem);
                         idUserItem = 0;
@@ -124,7 +126,6 @@ namespace testapplication.Controllers
                     else
                     {
                         user = UserDataAccessLayer.GetUserBy(idUser);
-
                     }
                     //     List<Item> Cities = UserDataAccessLayer.GetItemcity(user.Province);
                     //    user.CityList = new SelectList(Cities, "Id", "Title");
@@ -140,7 +141,7 @@ namespace testapplication.Controllers
             }
 
             FillDropDownList(user);
-            
+
             //  user.CityList = new SelectList(Cities, "Id", "Title", null, "ParentId");
 
             // user.CityItemList = Cities;
@@ -167,15 +168,13 @@ namespace testapplication.Controllers
         [HttpPost]
         public IActionResult Register(User user)
         {
-            Province_Bind();
+            //Province_Bind();
 
             var userBirthdatestring = user.birthdatestring;
             var userNationalCode = user.NationalCode;
-            var userPassword = user.Password;
             var userFirstName = user.FirstName;
             var userLastName = user.LastName;
             user.BirthDate = Tools.ToGeorgianDateTime(Tools.ToEnglishNumber(userBirthdatestring));
-        
 
 
             if (string.IsNullOrWhiteSpace(userNationalCode) || string.IsNullOrWhiteSpace(userFirstName) ||
@@ -193,6 +192,11 @@ namespace testapplication.Controllers
                 {
                     UserDataAccessLayer.UpdateUser(user);
                     UserTypeDataAccessLayer.UpdateUserType(user);
+                    if (from_page.Equals("managmentedit"))
+                    {
+                        return RedirectToAction("Management");
+
+                    }
                     return RedirectToAction("FamilyList");
                 }
                 else
@@ -219,72 +223,6 @@ namespace testapplication.Controllers
                     return View(user);
                 }
             }
-
-
-            /*  else
-              {
-  
-                  if (string.IsNullOrWhiteSpace(userNationalCode) || string.IsNullOrWhiteSpace(userPassword) ||
-                      string.IsNullOrWhiteSpace(userFirstName) || string.IsNullOrWhiteSpace(userLastName))
-                  {
-                      ViewBag.user_empty_error = "فیلد های اجباری را تکمیل کنید.";
-                      return View(userType);
-                  }
-  
-                  if (String.IsNullOrWhiteSpace(parentNationalCode))
-                  {
-                      if (TypeTitleId == 0)
-                      {
-                          ViewBag.typetitle_empty_nc_error = "اگر سرپرست وجود دارد باید کد ملی آن را وارد کنید.";
-                          return View(userType);
-                      }
-  
-                      var userId = UserDataAccessLayer.GetUserIdBy(userNationalCode);
-                      if (userId != -1)
-                      {
-                          UserDataAccessLayer.UpdateUser(userId, userNationalCode, userPassword, userFirstName, userLastName);
-                          UserTypeDataAccessLayer.UpdateUserType(null, TypeTitleId, DateTime.Now, DateTime.Now);
-                      }
-                      else
-                      {
-                          ViewBag.typetitle_unique_error = "کد ملی وارد شده تکراری است.";
-                          return View(userType);
-                      }
-                  }
-                  else
-                  {
-                      if (TypeTitleId == 0)
-                      {
-                          ViewBag.typetitle_empty_type_error = "اگر سرپرست وجود دارد باید نوع آن را وارد کنید.";
-                          return View(userType);
-                      }
-  
-                      var parent_user_id = UserDataAccessLayer.GetUserIdBy(parentNationalCode);
-                      if (parent_user_id == -1)
-                      {
-                          ViewBag.typetitle_notfound_error = "کدملی وارد شده برای سرپرست در سیستم ثبت نشده است.";
-  
-                          return View(userType);
-                      }
-  
-                      var userId = UserDataAccessLayer.GetUserIdBy(userNationalCode);
-                      if (userId == -1)
-                      {
-                          UserDataAccessLayer.UpdateUser(userId, userNationalCode, userPassword, userFirstName, userLastName);
-                          UserTypeDataAccessLayer.UpdateUserType(parent_user_id, userType.TypeTitleId, DateTime.Now, DateTime.Now);
-                      }
-                      else
-                      {
-                          ViewBag.typetitle_unique_error = "کد ملی وارد شده تکراری است.";
-                          return View(userType);
-                      }
-                  }
-  
-  
-                  
-              }*/
-
-            return RedirectToAction("FamilyList");
         }
 
         public IActionResult SetPassword()
@@ -315,7 +253,6 @@ namespace testapplication.Controllers
             {
                 userType = UserTypeDataAccessLayer.GetUserTypeBy(id);
                 ViewBag.User = userType.User;
-
             }
             else
             {
@@ -326,7 +263,7 @@ namespace testapplication.Controllers
 
             FillDropDownList(userType);
             // User user = new User();
-           
+
             //userType.User = user;
             return View(userType);
 
@@ -361,7 +298,7 @@ namespace testapplication.Controllers
             //  user.CityList = new SelectList(Cities, "Id", "Title", null, "ParentId");
 
             // user.CityItemList = Cities;
-            }
+        }
 
         [HttpPost]
         public IActionResult RegisterFamily(UserType userType)
@@ -438,7 +375,7 @@ namespace testapplication.Controllers
             {
                 User user = UserDataAccessLayer.GetUserBy(idUser);
 
-            //    List<UserType> userTypes = UserDataAccessLayer.GetFamily(idUser);
+                //    List<UserType> userTypes = UserDataAccessLayer.GetFamily(idUser);
 
                 globalUser = new User(user.NationalCode, user.FirstName, user.LastName);
                 ViewBag.AdminUser = user;
@@ -517,98 +454,132 @@ namespace testapplication.Controllers
             switch (uid)
             {
                 case "FamilyType":
-                    return ViewComponent("RelativeTable", new { uid }); //it will call Follower.cs InvokeAsync, and pass id to it.
+                    return ViewComponent("RelativeTable",
+                        new {uid});
                 case "DegreeEducation":
-                    return ViewComponent("DegreeEducationTable", new { uid }); //it will call Follower.cs InvokeAsync, and pass id to it.
+                    return ViewComponent("DegreeEducationTable",
+                        new {uid});
                 case "Religion":
-                    return ViewComponent("ReligionTable", new { uid }); //it will call Follower.cs InvokeAsync, and pass id to it.
+                    return ViewComponent("ReligionTable",
+                        new {uid});
                 case "MilitaryStatus":
-                    return ViewComponent("MilitaryStatusTable", new { uid }); //it will call Follower.cs InvokeAsync, and pass id to it.
+                    return ViewComponent("MilitaryStatusTable",
+                        new {uid});
                 case "Province":
                     Province_Bind2();
-                    return ViewComponent("StateTable", new { uid }); //it will call Follower.cs InvokeAsync, and pass id to it.
+                    return
+                        ViewComponent("StateTable",
+                            new {uid});
                 case "User":
-                    return ViewComponent("UsersTable", new { uid }); //it will call Follower.cs InvokeAsync, and pass id to it.
-
-
-
+                    return
+                        ViewComponent("UsersTable",
+                            new {uid});
             }
 
             return null;
             // return ViewComponent("Tablestwo", new { uid }); //it will call Follower.cs InvokeAsync, and pass id to it.
         }
-        
+
         [HttpGet]
         public IActionResult CreateItem()
         {
-            return PartialView("CreateItem", new Item(titleID));
-           
-           // return PartialView("CreateItem", new ItemTable(titleID));
+            return View();
+
+            // return PartialView("CreateItem", new ItemTable(titleID));
         }
 
         [HttpPost]
-        public JsonResult CreateItem(Item item)
+        public IActionResult CreateItem(Item item)
         {
             item.TypeTitle = titleID;
-            List<string> title_from_database = UserDataAccessLayer.getItemTitle(titleID);
-
-            if (title_from_database.Contains(item.Title))
+            List<Item> item_from_database = UserDataAccessLayer.GetAllItem(titleID);
+            List<string> titleList = new List<string>();
+            foreach (var i in item_from_database)
             {
-                return new JsonResult(null);
+                if (i.Title.Equals(item.Title))
+                {
+                    if (i.IsDeleted)
+                    {
+                        UserDataAccessLayer.UpdateIsDeletedItem(item.Id, item.TypeTitle, false);
+                    }
+                    else
+                    {
+                        return View();
+                    }
+                }
             }
 
 
             UserDataAccessLayer.InsertItem(item);
-            return new JsonResult(titleID);
+            return RedirectToAction("Management");
         }
 
         [HttpGet]
         public IActionResult EditItem(int id)
         {
-            Item item = UserDataAccessLayer.getItem(titleID,id);
-            return PartialView("EditItem", item);
+            Item item = UserDataAccessLayer.getItem(titleID, id);
+            if (item.UseCount > 0)
+            {
+                ViewBag.usecountnotzero_edit = "مورد انتخاب شده چندین مرتبه استفاده شده است. دقت کنید" +
+                                               "در صورت ویرایش عنوان همه موارد استفاده شده تغییر میکند.";
+            }
+
+            return View("EditItem", item);
         }
 
         [HttpPost]
-        public JsonResult EditItem(Item item)
+        public IActionResult EditItem(Item item)
         {
             item.TypeTitle = titleID;
-            List<string> title_from_database = UserDataAccessLayer.getItemTitle(titleID);
+            List<Item> item_from_database = UserDataAccessLayer.GetAllItem(titleID);
 
-            if (title_from_database.Contains(item.Title))
+            foreach (var i in item_from_database)
             {
-              //  ViewBag.Duplicates2 = "موارد تکراری ثبت نشد.";
-                return new JsonResult(null);
+                if (i.Title.Equals(item.Title))
+                {
+                    return View();
+                }
             }
-
 
             UserDataAccessLayer.UpdateItem(item);
-            return new JsonResult(titleID);
+            return RedirectToAction("Management");
         }
-        public IActionResult  DeleteItem(int id)
+
+        [HttpGet]
+        public IActionResult DeleteItem(int id)
         {
-            UserDataAccessLayer.UpdateIsDeletedItem(id,titleID,true);
-            switch (titleID)
+            Item item = UserDataAccessLayer.getItem(titleID, id);
+            if (item.UseCount > 0)
             {
-                case "FamilyType":
-                    return ViewComponent("RelativeTable", new { titleID }); //it will call Follower.cs InvokeAsync, and pass id to it.
-                case "DegreeEducation":
-                    return ViewComponent("DegreeEducationTable", new { titleID }); //it will call Follower.cs InvokeAsync, and pass id to it.
-                case "Religion":
-                    return ViewComponent("ReligionTable", new { titleID }); //it will call Follower.cs InvokeAsync, and pass id to it.
-                case "MilitaryStatus":
-                    return ViewComponent("MilitaryStatusTable", new { titleID }); //it will call Follower.cs InvokeAsync, and pass id to it.
-                case "Province":
-                    Province_Bind2();
-                    return ViewComponent("StateTable", new { titleID }); //it will call Follower.cs InvokeAsync, and pass id to it.
-                case "User":
-                    return ViewComponent("UsersTable", new { titleID });
-
-
+                ViewBag.usecountnotzero_delete = "مورد انتخاب شده چندین مرتبه استفاده شده است لطفا موارد" +
+                                                 " استفاده شده را تغییر دهید و سپس نسبت به حذف اقدام کنید.";
             }
 
-            return null;
+            return View("DeleteItem", item);
         }
+
+        [HttpPost]
+        public IActionResult DeleteItem(Item item)
+        {
+            item.TypeTitle = titleID;
+            UserDataAccessLayer.UpdateIsDeletedItem(item.Id, titleID, true);
+            return RedirectToAction("Management");
+        }
+
+        public IActionResult DisableUser(Item item)
+        {
+            item.TypeTitle = titleID;
+            UserDataAccessLayer.UpdateIsDeletedItem(item.Id, titleID, true);
+            return RedirectToAction("Management");
+        }
+
+        public IActionResult EnableUser(Item item)
+        {
+            item.TypeTitle = titleID;
+            UserDataAccessLayer.UpdateIsDeletedItem(item.Id, titleID, false);
+            return RedirectToAction("Management");
+        }
+
         //public JsonResult saveRows([FromBody] List<string> new_title_array)
         //{
         //    List<string> title = new List<string>();
@@ -688,11 +659,12 @@ namespace testapplication.Controllers
             foreach (DataRow dr in ds.Tables[0].Rows)
             {
                 provinceList.Add(new SelectListItem
-                    { Text = dr["Title"].ToString(), Value = dr["Id"].ToString() });
+                    {Text = dr["Title"].ToString(), Value = dr["Id"].ToString()});
             }
 
             ViewBag.Province = provinceList;
         }
+
         public void Province_Bind2()
         {
             DataSet ds = baseQuery.Get_Province();
@@ -700,7 +672,7 @@ namespace testapplication.Controllers
             foreach (DataRow dr in ds.Tables[0].Rows)
             {
                 provinceList.Add(new SelectListItem
-                    { Text = dr["Title"].ToString(), Value = dr["Id"].ToString() });
+                    {Text = dr["Title"].ToString(), Value = dr["Id"].ToString()});
             }
 
             ViewBag.Province2 = provinceList;
@@ -712,7 +684,7 @@ namespace testapplication.Controllers
             List<SelectListItem> citylist = new List<SelectListItem>();
             foreach (DataRow dr in ds.Tables[0].Rows)
             {
-                citylist.Add(new SelectListItem { Text = dr["Title"].ToString(), Value = dr["Id"].ToString() });
+                citylist.Add(new SelectListItem {Text = dr["Title"].ToString(), Value = dr["Id"].ToString()});
             }
 
             return Json(citylist);
@@ -739,14 +711,24 @@ namespace testapplication.Controllers
         }
 
 
-      
-        
         public IActionResult RegisterUser(int id)
         {
             idUserItem = id;
-     
+
             //    User user = UserDataAccessLayer.GetUserBy(id);
             return RedirectToAction("Register");
+        }
+
+
+        public IActionResult InsetItem()
+        {
+            //    User user = UserDataAccessLayer.GetUserBy(id);
+            return RedirectToAction("CreateItem");
+        }
+
+        public IActionResult cancel_to_managment()
+        {
+            return RedirectToAction("Management");
         }
     }
 }
